@@ -24,10 +24,6 @@ public class Plant {
     private String description;
     private Integer age;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private byte[] image;
-
     private User owner;
     private Species species;
 }

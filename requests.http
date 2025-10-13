@@ -1,0 +1,47 @@
+GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa
+
+###
+GET http://localhost:9080/plant_manager/api/users
+
+###
+
+GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6
+
+###
+
+GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
+
+###
+
+GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa/avatar
+
+###
+
+DELETE http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
+
+###
+
+DELETE http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa/avatar
+
+###
+
+PUT http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="sigrid.png"
+
+< C:\\Users\\groch\\Desktop\\jee\\plant_manager\\kradzione\\sigrid.png
+--boundary--
+
+###
+
+PATCH http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="calvian.png"
+Content-Type: image/png
+
+< C:/Users/groch/Desktop/jee/plant_manager/kradzione/calvian.png
+--boundary--

@@ -2,5 +2,19 @@
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         version="6.0">
+         version="6.0"
+         metadata-complete="false">
+
+    <listener>
+        <listener-class>com.example.plant_manager.configuration.CreateDataSources</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.example.plant_manager.configuration.CreateServices</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.example.plant_manager.configuration.CreateControllers</listener-class>
+    </listener>
+
 </web-app>
