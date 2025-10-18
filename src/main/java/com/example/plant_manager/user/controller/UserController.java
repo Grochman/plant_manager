@@ -7,6 +7,9 @@ import com.example.plant_manager.user.dto.GetUsersResponse;
 import com.example.plant_manager.user.entity.User;
 import com.example.plant_manager.user.service.UserService;
 import com.example.plant_manager.servlet.exceptions.NotFoundException;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,16 +18,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+@RequestScoped
+@NoArgsConstructor(force = true)
 public class UserController {
     private final UserService service;
 
     private final DtoFunctionFactory factory;
 
-    private final String avatarDir;
-    public UserController(UserService service, DtoFunctionFactory factory, String avatarDir) {
+    @Inject
+    public UserController(UserService service, DtoFunctionFactory factory) {
         this.service = service;
         this.factory = factory;
-        this.avatarDir = avatarDir;
     }
 
     public GetUsersResponse getUsers() {

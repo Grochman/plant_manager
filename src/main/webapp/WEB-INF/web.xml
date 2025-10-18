@@ -10,16 +10,4 @@
         <param-value>C:\Users\groch\Desktop\jee\plant_manager\src\main\resources\avatars\</param-value>
     </context-param>
 
-    <listener>
-        <listener-class>com.example.plant_manager.configuration.CreateDataSources</listener-class>
-    </listener>
-
-    <listener>
-        <listener-class>com.example.plant_manager.configuration.CreateServices</listener-class>
-    </listener>
-
-    <listener>
-        <listener-class>com.example.plant_manager.configuration.CreateControllers</listener-class>
-    </listener>
-
 </web-app>

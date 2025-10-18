@@ -1,7 +1,8 @@
 package com.example.plant_manager.serialization;
 
-import com.example.plant_manager.user.entity.User;
+import jakarta.enterprise.context.Dependent;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,6 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+@Log
+@Dependent
 public class CloningUtility {
     @SneakyThrows
     @SuppressWarnings("unchecked")

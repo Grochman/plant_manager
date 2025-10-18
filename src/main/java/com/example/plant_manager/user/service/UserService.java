@@ -2,14 +2,21 @@ package com.example.plant_manager.user.service;
 
 import com.example.plant_manager.user.entity.User;
 import com.example.plant_manager.user.repository.UserRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class UserService {
     private final UserRepository userRepository;
 
+    @Inject
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -23,6 +30,8 @@ public class UserService {
     }
 
     public void create(User user) {
+        System.out.println(user);
+
         userRepository.create(user);
     }
 

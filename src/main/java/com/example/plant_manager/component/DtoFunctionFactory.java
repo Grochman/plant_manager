@@ -2,7 +2,9 @@ package com.example.plant_manager.component;
 
 import com.example.plant_manager.user.dto.functions.UserToResponseFunction;
 import com.example.plant_manager.user.dto.functions.UsersToResponseFunction;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class DtoFunctionFactory {
     public UserToResponseFunction userToResponse() {
         return new UserToResponseFunction();
