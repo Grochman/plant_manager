@@ -16,10 +16,11 @@ import java.util.UUID;
 @WebListener
 public class InitializedData implements ServletContextListener {
     private UserService userService;
-
+    private String avatarDir;
     @Override
     public void contextInitialized(ServletContextEvent event) {
         userService = (UserService) event.getServletContext().getAttribute("userService");
+        avatarDir = event.getServletContext().getInitParameter("avatarDir");
         init();
     }
 
@@ -28,19 +29,19 @@ public class InitializedData implements ServletContextListener {
         User alvin = User.builder()
                 .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                 .name("Alvin")
-                .avatar(loadBytes("C:\\Users\\groch\\Pictures\\foty\\1.jpg"))
+                .avatar(loadBytes(avatarDir + "1.jpg"))
                 .build();
 
         User cyryl = User.builder()
                 .id(UUID.fromString("a4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                 .name("Cyryl")
-                .avatar(loadBytes("C:\\Users\\groch\\Pictures\\foty\\1.jpg"))
+                .avatar(loadBytes(avatarDir + "1.jpg"))
                 .build();
 
         User kevin = User.builder()
                 .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
                 .name("Kevin")
-                .avatar(loadBytes("C:\\Users\\groch\\Pictures\\foty\\2.JPG"))
+                .avatar(loadBytes(avatarDir + "2.JPG"))
                 .build();
 
         User barbados = User.builder()

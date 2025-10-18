@@ -31,7 +31,7 @@ Content-Type: multipart/form-data; boundary=boundary
 --boundary
 Content-Disposition: form-data; name="avatar"; filename="sigrid.png"
 
-< C:\\Users\\groch\\Desktop\\jee\\plant_manager\\kradzione\\sigrid.png
+< C:\\Users\\groch\\Desktop\\jee\\plant_manager\\test_avatars\\sigrid.png
 --boundary--
 
 ###
@@ -43,5 +43,5 @@ Content-Type: multipart/form-data; boundary=boundary
 Content-Disposition: form-data; name="avatar"; filename="calvian.png"
 Content-Type: image/png
 
-< C:/Users/groch/Desktop/jee/plant_manager/kradzione/calvian.png
+< C:/Users/groch/Desktop/jee/plant_manager/test_avatars/calvian.png
 --boundary--

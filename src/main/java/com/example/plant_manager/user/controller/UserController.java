@@ -20,9 +20,11 @@ public class UserController {
 
     private final DtoFunctionFactory factory;
 
-    public UserController(UserService service, DtoFunctionFactory factory) {
+    private final String avatarDir;
+    public UserController(UserService service, DtoFunctionFactory factory, String avatarDir) {
         this.service = service;
         this.factory = factory;
+        this.avatarDir = avatarDir;
     }
 
     public GetUsersResponse getUsers() {

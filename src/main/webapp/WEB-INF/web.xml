@@ -5,6 +5,11 @@
          version="6.0"
          metadata-complete="false">
 
+    <context-param>
+        <param-name>avatarDir</param-name>
+        <param-value>C:\Users\groch\Desktop\jee\plant_manager\src\main\resources\avatars\</param-value>
+    </context-param>
+
     <listener>
         <listener-class>com.example.plant_manager.configuration.CreateDataSources</listener-class>
     </listener>
