@@ -97,7 +97,7 @@ public class UserController {
                     try {
                         byte[] bytes = avatar.readAllBytes();
 
-                        Path avatarsDir = Paths.get("src/main/resources/avatars");
+                        Path avatarsDir = Paths.get("null");
                         Files.createDirectories(avatarsDir);
 
                         Path filePath = avatarsDir.resolve(uuid + ".png");

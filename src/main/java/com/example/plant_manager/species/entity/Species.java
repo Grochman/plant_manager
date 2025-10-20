@@ -1,20 +1,23 @@
 package com.example.plant_manager.species.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
+@Builder
 @EqualsAndHashCode
-public class Species {
+public class Species implements Serializable {
+    public enum LightType{
+        LOW, MEDIUM, HIGH;
+    }
+
+    private UUID id;
     private String fullName;
     private String commonName;
     private String family;
@@ -24,6 +27,3 @@ public class Species {
     private String origin;
 }
 
-enum LightType{
-    LOW, MEDIUM, HIGH;
-}

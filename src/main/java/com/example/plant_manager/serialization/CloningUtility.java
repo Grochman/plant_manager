@@ -2,7 +2,6 @@ package com.example.plant_manager.serialization;
 
 import jakarta.enterprise.context.Dependent;
 import lombok.SneakyThrows;
-import lombok.extern.java.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-@Log
 @Dependent
 public class CloningUtility {
     @SneakyThrows
@@ -21,7 +19,6 @@ public class CloningUtility {
              ObjectInputStream ois = new ObjectInputStream(is)) {
             return (T) ois.readObject();
         }
-
     }
 
     private <T extends Serializable> ByteArrayOutputStream writeObject(T object) throws IOException {

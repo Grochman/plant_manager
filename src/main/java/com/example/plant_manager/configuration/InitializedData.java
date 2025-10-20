@@ -1,37 +1,40 @@
 package com.example.plant_manager.configuration;
 
+import com.example.plant_manager.plant.entity.Plant;
+import com.example.plant_manager.plant.service.PlantService;
+import com.example.plant_manager.species.entity.Species;
+import com.example.plant_manager.species.service.SpeciesService;
 import com.example.plant_manager.user.entity.User;
 import com.example.plant_manager.user.service.UserService;
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Initialized;
 import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletContextEvent;
 import lombok.SneakyThrows;
-import lombok.extern.java.Log;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.UUID;
 
-@Log
 @ApplicationScoped
 public class InitializedData {
     private final UserService userService;
     private final RequestContextController requestContextController;
+    private final PlantService plantService;
+    private final SpeciesService speciesService;
 
     @Inject
     public InitializedData(
             UserService userService,
-            RequestContextController requestContextController
-    ) {
+            RequestContextController requestContextController,
+            PlantService plantService, SpeciesService speciesService) {
         this.userService = userService;
         this.requestContextController = requestContextController;
+        this.speciesService = speciesService;
+        this.plantService = plantService;
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -65,12 +68,47 @@ public class InitializedData {
                 .name("Barbados")
                 .build();
 
-        log.info(alvin.toString());
-
         userService.create(alvin);
         userService.create(kevin);
         userService.create(barbados);
         userService.create(cyryl);
+
+        Species ficus = Species.builder()
+                .id(UUID.randomUUID())
+                .fullName("Ficus lyrata")
+                .commonName("Fiddle Leaf Fig")
+                .family("Moraceae")
+                .description("A popular indoor plant with large, glossy leaves.")
+                .wateringRateInDays(7)
+                .lightType(Species.LightType.MEDIUM)
+                .origin("Western Africa")
+                .build();
+
+        speciesService.create(ficus);
+
+        Plant kevinFicus = Plant.builder()
+                .id(UUID.randomUUID())
+                .name("Charlie")
+                .lastWateringDate(LocalDate.of(2025, 10, 10))
+                .description("A thriving Monstera kept near the living room window.")
+                .age(2)
+                .owner(kevin)
+                .species(ficus)
+                .build();
+
+        Plant testPlant = Plant.builder()
+                .id(UUID.randomUUID())
+                .name("Test")
+                .lastWateringDate(LocalDate.of(2025, 10, 10))
+                .description("A thriving Monstera kept near the living room window.")
+                .age(2)
+                .owner(kevin)
+                .species(ficus)
+                .build();
+
+        plantService.create(kevinFicus);
+        plantService.create(testPlant);
+        plantService.delete(testPlant.getId());
 
         requestContextController.deactivate();
   }

@@ -26,12 +26,14 @@ public class UserRepository {
     }
 
     public void create(User entity)  throws IllegalArgumentException {
-        System.out.println(entity);
-
         dataStore.createUser(entity);
     }
 
     public void update(User entity)  throws IllegalArgumentException {
         dataStore.updateUser(entity);
+    }
+
+    public void delete(UUID id) {
+        dataStore.deleteUser(id);
     }
 }

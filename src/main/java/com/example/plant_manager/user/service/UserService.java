@@ -30,10 +30,10 @@ public class UserService {
     }
 
     public void create(User user) {
-        System.out.println(user);
-
         userRepository.create(user);
     }
 
     public void update(User user) {userRepository.update(user);}
+
+    public void delete(UUID id) {userRepository.delete(id);}
 }
