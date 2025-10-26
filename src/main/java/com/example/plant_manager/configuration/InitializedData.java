@@ -11,7 +11,9 @@ import jakarta.enterprise.context.Initialized;
 import jakarta.enterprise.context.control.RequestContextController;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,16 +27,17 @@ public class InitializedData {
     private final RequestContextController requestContextController;
     private final PlantService plantService;
     private final SpeciesService speciesService;
-
+    private final ServletContext context;
     @Inject
     public InitializedData(
             UserService userService,
             RequestContextController requestContextController,
-            PlantService plantService, SpeciesService speciesService) {
+            PlantService plantService, SpeciesService speciesService, ServletContext servletContext) {
         this.userService = userService;
         this.requestContextController = requestContextController;
         this.speciesService = speciesService;
         this.plantService = plantService;
+        this.context = servletContext;
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -45,22 +48,24 @@ public class InitializedData {
     private void init() {
         requestContextController.activate();
 
+        String avatarDir = context.getInitParameter("avatarDir");
+
         User alvin = User.builder()
                 .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                 .name("Alvin")
-                //.avatar(loadBytes(avatarDir + "1.jpg"))
+                .avatar(loadBytes(avatarDir + "1.jpg"))
                 .build();
 
         User cyryl = User.builder()
                 .id(UUID.fromString("a4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                 .name("Cyryl")
-                //.avatar(loadBytes(avatarDir + "11.jpg"))
+                .avatar(loadBytes(avatarDir + "1.jpg"))
                 .build();
 
         User kevin = User.builder()
                 .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
                 .name("Kevin")
-               // .avatar(loadBytes(avatarDir + "2.JPG"))
+                .avatar(loadBytes(avatarDir + "2.JPG"))
                 .build();
 
         User barbados = User.builder()

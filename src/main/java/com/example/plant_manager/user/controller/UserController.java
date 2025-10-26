@@ -9,6 +9,7 @@ import com.example.plant_manager.user.service.UserService;
 import com.example.plant_manager.servlet.exceptions.NotFoundException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
@@ -22,13 +23,14 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 public class UserController {
     private final UserService service;
-
     private final DtoFunctionFactory factory;
+    private final ServletContext context;
 
     @Inject
-    public UserController(UserService service, DtoFunctionFactory factory) {
+    public UserController(UserService service, DtoFunctionFactory factory, ServletContext context) {
         this.service = service;
         this.factory = factory;
+        this.context = context;
     }
 
     public GetUsersResponse getUsers() {
@@ -70,7 +72,7 @@ public class UserController {
                     try {
                         byte[] bytes = avatar.readAllBytes();
 
-                        Path avatarsDir = Paths.get("src/main/resources/avatars");
+                        Path avatarsDir = Paths.get(context.getInitParameter("avatarDir"));
                         Files.createDirectories(avatarsDir);
 
                         Path filePath = avatarsDir.resolve(uuid + ".png");
