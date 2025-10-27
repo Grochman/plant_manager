@@ -112,7 +112,7 @@ public class DataStore {
                 .collect(Collectors.toList());
     }
 
-    public void createPlant(Plant entity)  throws IllegalArgumentException {
+    public void createPlant(Plant entity) throws IllegalArgumentException {
         if (plants.stream().anyMatch(plant -> plant.getId().equals(entity.getId()))) {
             throw new IllegalArgumentException("The plant id \"%s\" is not unique".formatted(entity.getId()));
         }

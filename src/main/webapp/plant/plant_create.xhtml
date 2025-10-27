@@ -31,7 +31,23 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-4 p-2">
+                        <fieldset>
+                            <legend class="form-label fs-6">Species:</legend>
+                            <ui:repeat value="#{plantCreate.species}" var="species">
+                                <div class="form-check">
+                                    <h:selectOneRadio id="radioId" group="species"
+                                                      value="#{plantCreate.plant.species}"
+                                                      styleClass="form-check-input"
+                                                      enabledClass="form-check-label">
+                                        <f:selectItem itemValue="#{species}" itemLabel="#{species.commonName}"/>
+                                    </h:selectOneRadio>
+                                </div>
+                            </ui:repeat>
+                        </fieldset>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-2 p-2 text-center">
                         <h:commandButton styleClass="btn btn-primary" value="Create"
