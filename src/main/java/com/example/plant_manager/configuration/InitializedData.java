@@ -19,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -89,7 +91,19 @@ public class InitializedData {
                 .origin("Western Africa")
                 .build();
 
+        Species testSpecies = Species.builder()
+                .id(UUID.randomUUID())
+                .fullName("test")
+                .commonName("Test")
+                .family("testfamily")
+                .description("A popular indoor plant with large, glossy leaves.")
+                .wateringRateInDays(7)
+                .lightType(Species.LightType.MEDIUM)
+                .origin("Western Africa")
+                .build();
+
         speciesService.create(ficus);
+        speciesService.create(testSpecies);
 
         Plant kevinFicus = Plant.builder()
                 .id(UUID.randomUUID())
@@ -113,7 +127,6 @@ public class InitializedData {
 
         plantService.create(kevinFicus);
         plantService.create(testPlant);
-        plantService.delete(testPlant.getId());
 
         requestContextController.deactivate();
   }

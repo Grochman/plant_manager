@@ -1,10 +1,8 @@
-package com.example.plant_manager.species.entity;
+package com.example.plant_manager.species.model;
 
-import com.example.plant_manager.plant.entity.Plant;
+import com.example.plant_manager.species.entity.Species;
 import lombok.*;
 
-import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -14,19 +12,13 @@ import java.util.UUID;
 @ToString
 @Builder
 @EqualsAndHashCode
-public class Species implements Serializable {
-    public enum LightType{
-        LOW, MEDIUM, HIGH;
-    }
-
+public class SpeciesModel {
     private UUID id;
     private String fullName;
     private String commonName;
     private String family;
     private String description;
     private Integer wateringRateInDays;
-    private LightType lightType;
+    private LightTypeModel lightType;
     private String origin;
-    private List<Plant> plantList;
 }
-
