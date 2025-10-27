@@ -102,8 +102,6 @@ public class InitializedData {
                 .origin("Western Africa")
                 .build();
 
-        speciesService.create(ficus);
-        speciesService.create(testSpecies);
 
         Plant kevinFicus = Plant.builder()
                 .id(UUID.randomUUID())
@@ -125,6 +123,21 @@ public class InitializedData {
                 .species(ficus)
                 .build();
 
+        Plant testPlant2 = Plant.builder()
+                .id(UUID.randomUUID())
+                .name("Test2")
+                .lastWateringDate(LocalDate.of(2025, 10, 10))
+                .description("A thriving Monstera kept near the living room window.")
+                .age(2)
+                .owner(kevin)
+                .species(ficus)
+                .build();
+
+        ficus.setPlantList(new ArrayList<>(List.of(kevinFicus, testPlant, testPlant2)));
+        speciesService.create(ficus);
+        speciesService.create(testSpecies);
+
+        plantService.create(testPlant2);
         plantService.create(kevinFicus);
         plantService.create(testPlant);
 

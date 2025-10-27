@@ -12,9 +12,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString
+@ToString(exclude = "species")
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "species")
 public class Plant implements Serializable {
     private UUID id;
     private String name;

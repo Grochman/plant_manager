@@ -1,8 +1,9 @@
 package com.example.plant_manager.species.model;
 
-import com.example.plant_manager.species.entity.Species;
+import com.example.plant_manager.plant.model.PlantsModel;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,4 +22,5 @@ public class SpeciesModel {
     private Integer wateringRateInDays;
     private LightTypeModel lightType;
     private String origin;
+    private PlantsModel plants;
 }

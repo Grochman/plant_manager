@@ -62,28 +62,9 @@ public class PlantCreate implements Serializable {
         }
     }
 
-    public String goToSpeciesAction() {
-        return "/plant/plant_create_species.xhtml?faces-redirect=true";
-    }
-
-    public String goToSkillsAction() {
-        return "/character/character_create__skills.xhtml?faces-redirect=true";
-    }
-
-    public Object goToBasicAction() {
-        return "/plant/plant_create.xhtml?faces-redirect=true";
-    }
-
     public String cancelAction() {
         conversation.end();
-        return "/plant/plant_list.xhtml?faces-redirect=true";
-    }
-
-    public String goToConfirmAction() {
-    //    plant.setLevel(1);
-      //  plant.setExperience(0);
-        //plant.setHealth(plant.getConstitution() == null ? 0 : plant.getConstitution() * 2);
-        return "/plant/plant_create_confirm.xhtml?faces-redirect=true";
+        return "/species/species_list.xhtml?faces-redirect=true";
     }
 
     public String saveAction() {

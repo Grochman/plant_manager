@@ -12,7 +12,10 @@
 
     <ui:define name="content">
         <article>
-            <header><h2><h:outputText value="#{speciesView.species.commonName}"/></h2></header>
+            <header>
+                <h2><h:outputText value="#{speciesView.species.commonName}"/></h2>
+            </header>
+
             <div class="container">
                 <div class="row">
                     <div class="col-4">
@@ -26,6 +29,42 @@
                         </div>
                     </div>
                 </div>
+
+                <h:dataTable value="#{speciesView.species.plants.plants}" var="plant"
+                             styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
+
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputText value="#{plant.name}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">View</f:facet>
+                        <h:link outcome="/plant/plant_view.xhtml" value="View">
+                            <f:param name="id" value="#{plant.id}"/>
+                        </h:link>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Edit</f:facet>
+                        <h:link outcome="/plant/plant_edit.xhtml" value="Edit">
+                            <f:param name="id" value="#{plant.id}"/>
+                        </h:link>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Delete</f:facet>
+                        <h:form>
+                            <h:commandButton styleClass="btn" value="Delete"
+                                             action="#{speciesView.deleteAction(plant)}"/>
+                        </h:form>
+                    </h:column>
+
+                    <f:facet name="footer">
+                        <h:button styleClass="btn" outcome="/plant/plant_create.xhtml"
+                                  value="Create new plant"/>
+                    </f:facet>
+                </h:dataTable>
             </div>
         </article>
     </ui:define>

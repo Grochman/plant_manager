@@ -11,9 +11,9 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString
+@ToString(exclude = "plantList")
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "plantList")
 public class Species implements Serializable {
     public enum LightType{
         LOW, MEDIUM, HIGH;

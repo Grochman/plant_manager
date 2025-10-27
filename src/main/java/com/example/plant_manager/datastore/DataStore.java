@@ -121,17 +121,59 @@ public class DataStore {
 
     public void updatePlant(Plant entity)  throws IllegalArgumentException {
         Plant newEntity = cloningUtility.clone(entity);
-        if (plants.removeIf(plant -> plant.getId().equals(entity.getId()))) {
-            plants.add(newEntity);
-        } else {
-            throw new IllegalArgumentException("The user with id \"%s\" does not have a avatar".formatted(entity.getId()));
+
+        Plant oldPlant = plants.stream()
+                .filter(p -> p.getId().equals(entity.getId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "The plant with id \"%s\" does not exist".formatted(entity.getId())
+                ));
+
+        Species oldSpecies = oldPlant.getSpecies();
+        if (oldSpecies != null && oldSpecies.getPlantList() != null) {
+            species.remove(oldSpecies);
+
+            oldSpecies.getPlantList().removeIf(p -> p.getId().equals(entity.getId()));
+
+            species.add(oldSpecies);
         }
+
+        Species newSpecies = newEntity.getSpecies();
+        if (newSpecies != null) {
+            species.remove(newSpecies);
+
+            if (newSpecies.getPlantList() == null) {
+                newSpecies.setPlantList(new ArrayList<>());
+            }
+
+            newSpecies.getPlantList().removeIf(p -> p.getId().equals(newEntity.getId()));
+            newSpecies.getPlantList().add(newEntity);
+
+            species.add(newSpecies);
+        }
+
+        plants.remove(oldPlant);
+        plants.add(newEntity);
     }
 
     public void deletePlant(UUID id) {
-        findPlant(id).ifPresent(plant -> {
-            plants.remove(plant);
-        });
+        Plant realPlant = plants.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Plant not found"));
+
+        plants.remove(realPlant);
+
+        Species realSpecies = realPlant.getSpecies();
+        if (realSpecies != null) {
+            species.remove(realSpecies);
+
+            if (realSpecies.getPlantList() != null) {
+                realSpecies.getPlantList().removeIf(p -> p.getId().equals(id));
+            }
+
+            species.add(realSpecies);
+        }
     }
 
     @SneakyThrows
