@@ -45,3 +45,64 @@ Content-Type: image/png
 
 < C:/Users/groch/Desktop/jee/plant_manager/test_avatars/calvian.png
 --boundary--
+
+###
+GET http://localhost:9080/plant_manager/api/plants
+
+###
+
+GET http://localhost:9080/plant_manager/api/plants/4521ad6d-506c-40c8-9f70-c7ebd6c1a000
+
+###
+
+GET http://localhost:9080/plant_manager/api/plants/34593daf-0213-408d-a905-b299eeae2833
+
+###
+#---------------------------------------------------------
+# all species
+
+GET http://localhost:9080/plant_manager/api/species
+
+###
+# existing species
+
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c
+
+###
+
+DELETE http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c
+
+###
+# non exitsitn species 404
+
+GET http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
+
+###
+# create new species
+
+PUT http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
+Content-Type: application/json
+
+{
+  "lightType": "MEDIUM",
+  "fullName": "Default full name",
+  "commonName": "Default common name",
+  "family": "family",
+  "description": "lorem ipsum",
+  "wateringRateInDays": 24,
+  "origin": "europa"
+}
+
+###
+# update species.
+
+PATCH http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
+Content-Type: application/json
+
+{
+  "fullName": "Changed full name",
+  "commonName": "Changed common name",
+  "description": "Changed lorem ipsum"
+}
+
+###

@@ -81,7 +81,7 @@ public class InitializedData {
         userService.create(cyryl);
 
         Species ficus = Species.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.fromString("83da3ba6-c7e4-4dfe-846a-64284677f45c"))
                 .fullName("Ficus lyrata")
                 .commonName("Fiddle Leaf Fig")
                 .family("Moraceae")

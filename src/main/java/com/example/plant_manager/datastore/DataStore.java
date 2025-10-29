@@ -2,7 +2,6 @@ package com.example.plant_manager.datastore;
 
 import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.serialization.CloningUtility;
-import com.example.plant_manager.servlet.exceptions.NotFoundException;
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.user.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -173,7 +172,7 @@ public class DataStore {
         Plant realPlant = plants.stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("Plant not found"));
+                .orElseThrow(() -> new RuntimeException("Plant not found"));
 
         plants.remove(realPlant);
 
