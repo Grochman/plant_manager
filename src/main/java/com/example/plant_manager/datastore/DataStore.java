@@ -116,8 +116,26 @@ public class DataStore {
         if (plants.stream().anyMatch(plant -> plant.getId().equals(entity.getId()))) {
             throw new IllegalArgumentException("The plant id \"%s\" is not unique".formatted(entity.getId()));
         }
-        plants.add(cloningUtility.clone(entity));
 
+        Species realSpecies = species.stream()
+                .filter(s -> s.getId().equals(entity.getSpecies().getId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Species with id \"%s\" not found for plant creation".formatted(entity.getSpecies().getId())
+                ));
+
+        Plant newPlant = cloningUtility.clone(entity);
+
+        species.remove(realSpecies);
+        if (realSpecies.getPlantList() == null) {
+            realSpecies.setPlantList(new ArrayList<>());
+        }
+
+        realSpecies.getPlantList().removeIf(p -> p.getId().equals(newPlant.getId()));
+        realSpecies.getPlantList().add(newPlant);
+
+        species.add(realSpecies);
+        plants.add(newPlant);
     }
 
     public void updatePlant(Plant entity)  throws IllegalArgumentException {
@@ -130,27 +148,21 @@ public class DataStore {
                         "The plant with id \"%s\" does not exist".formatted(entity.getId())
                 ));
 
-        Species oldSpecies = oldPlant.getSpecies();
+        Species oldSpecies = species.stream()
+                .filter(p -> p.getId().equals(entity.getSpecies().getId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "The species of this plant does not exist"
+                ));
         if (oldSpecies != null && oldSpecies.getPlantList() != null) {
             species.remove(oldSpecies);
 
             oldSpecies.getPlantList().removeIf(p -> p.getId().equals(entity.getId()));
 
+            oldSpecies.getPlantList().removeIf(p -> p.getId().equals(newEntity.getId()));
+            oldSpecies.getPlantList().add(newEntity);
+
             species.add(oldSpecies);
-        }
-
-        Species newSpecies = newEntity.getSpecies();
-        if (newSpecies != null) {
-            species.remove(newSpecies);
-
-            if (newSpecies.getPlantList() == null) {
-                newSpecies.setPlantList(new ArrayList<>());
-            }
-
-            newSpecies.getPlantList().removeIf(p -> p.getId().equals(newEntity.getId()));
-            newSpecies.getPlantList().add(newEntity);
-
-            species.add(newSpecies);
         }
 
         plants.remove(oldPlant);
@@ -165,7 +177,12 @@ public class DataStore {
 
         plants.remove(realPlant);
 
-        Species realSpecies = realPlant.getSpecies();
+        Species realSpecies = species.stream()
+                .filter(p -> p.getId().equals(realPlant.getSpecies().getId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "The species of this plant does not exist"
+                ));
         if (realSpecies != null) {
             species.remove(realSpecies);
 

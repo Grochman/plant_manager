@@ -26,6 +26,15 @@
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
+                            <h:inputText id="desc" value="#{plantEdit.plant.description}" styleClass="form-control"/>
+                            <h:outputLabel for="desc" value="Description:" styleClass="form-label"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4 p-2">
+                        <div class="form-outline">
                             <h:inputText id="age" value="#{plantEdit.plant.age}" styleClass="form-control"/>
                             <h:outputLabel for="age" value="Age:" styleClass="form-label"/>
                         </div>

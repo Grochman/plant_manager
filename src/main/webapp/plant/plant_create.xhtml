@@ -26,28 +26,38 @@
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
+                            <h:inputText id="desc" value="#{plantCreate.plant.description}" styleClass="form-control"/>
+                            <h:outputLabel for="desc" value="Description:" styleClass="form-label"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4 p-2">
+                        <div class="form-outline">
                             <h:inputText id="age" value="#{plantCreate.plant.age}" styleClass="form-control"/>
                             <h:outputLabel for="age" value="Age:" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-4 p-2">
-                        <fieldset>
-                            <legend class="form-label fs-6">Species:</legend>
-                            <ui:repeat value="#{plantCreate.species}" var="species">
-                                <div class="form-check">
-                                    <h:selectOneRadio id="radioId" group="species"
-                                                      value="#{plantCreate.plant.species}"
-                                                      styleClass="form-check-input"
-                                                      enabledClass="form-check-label">
-                                        <f:selectItem itemValue="#{species}" itemLabel="#{species.commonName}"/>
-                                    </h:selectOneRadio>
-                                </div>
-                            </ui:repeat>
-                        </fieldset>
+                        <div class="form-outline">
+                            <h:selectOneMenu id="speciesSelect"
+                                             value="#{plantCreate.plant.species}"
+                                             styleClass="form-select">
+                                <f:selectItem itemLabel="-- Select a Species --" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{plantCreate.species}"
+                                               var="species"
+                                               itemValue="#{species}"
+                                               itemLabel="#{species.commonName}" />
+                            </h:selectOneMenu>
+                            <h:outputLabel for="speciesSelect" value="Species:" styleClass="form-label"/>
+                        </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-2 p-2 text-center">
                         <h:commandButton styleClass="btn btn-primary" value="Create"
@@ -61,5 +71,4 @@
             </h:form>
         </article>
     </ui:define>
-
 </ui:composition>
