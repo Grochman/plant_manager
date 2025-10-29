@@ -117,6 +117,7 @@ public class DataStore {
             throw new IllegalArgumentException("The plant id \"%s\" is not unique".formatted(entity.getId()));
         }
         plants.add(cloningUtility.clone(entity));
+
     }
 
     public void updatePlant(Plant entity)  throws IllegalArgumentException {

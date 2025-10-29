@@ -51,6 +51,7 @@ public class PlantCreate implements Serializable {
     }
 
     public void init() {
+
         if (conversation.isTransient()) {
             species = speciesService.findAll().stream()
                     .map(factory.speciesToModel())
@@ -60,6 +61,7 @@ public class PlantCreate implements Serializable {
                     .build();
             conversation.begin();
         }
+
     }
 
     public String cancelAction() {
@@ -70,11 +72,12 @@ public class PlantCreate implements Serializable {
     public String saveAction() {
         plantService.create(factory.modelToPlant().apply(plant));
         conversation.end();
-        return "/plant/plant_list.xhtml?faces-redirect=true";
+        return "/species/species_list.xhtml?faces-redirect=true";
     }
 
     public String getConversationId() {
         return conversation.getId();
     }
+
 }
 

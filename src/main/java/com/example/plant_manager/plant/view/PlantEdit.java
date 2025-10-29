@@ -43,13 +43,14 @@ public class PlantEdit implements Serializable {
         if (plant.isPresent()) {
             this.plant = factory.plantToEditModel().apply(plant.get());
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Character not found");
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Plant not found");
         }
     }
 
     public String saveAction() {
         service.update(factory.updatePlant().apply(service.find(id).orElseThrow(), plant));
-        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-        return viewId + "?faces-redirect=true&includeViewParams=true";
+        //String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+        //return viewId + "?faces-redirect=true&includeViewParams=true";
+        return "/species/species_list.xhtml?faces-redirect=true";
     }
 }

@@ -17,19 +17,66 @@
             </header>
 
             <div class="container">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                Family
-                            </div>
-                            <div class="col-6">
-                                <h:outputText value="#{speciesView.species.family}"/>
-                            </div>
-                        </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Family
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.family}"/>
                     </div>
                 </div>
 
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Ful name
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.fullName}"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Common name
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.commonName}"/>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Description
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.description}"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Watering rate in days
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.wateringRateInDays}"/>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Origin
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.origin}"/>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Light intensity
+                    </div>
+                    <div class="col-6">
+                        <h:outputText value="#{speciesView.species.lightType.type}"/>
+                    </div>
+                </div>
                 <h:dataTable value="#{speciesView.species.plants.plants}" var="plant"
                              styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
