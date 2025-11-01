@@ -24,6 +24,5 @@ public class PutPlantRequest {
     private String name;
     private String description;
     private Integer age;
-    private UUID species;
 }
 

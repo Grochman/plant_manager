@@ -104,7 +104,7 @@ public class InitializedData {
 
 
         Plant kevinFicus = Plant.builder()
-                .id(UUID.randomUUID())
+                .id(UUID.fromString("0b8c0653-b196-4ac4-8015-3e43c117517e"))
                 .name("Charlie")
                 .lastWateringDate(LocalDate.of(2025, 10, 10))
                 .description("A thriving Monstera kept near the living room window.")

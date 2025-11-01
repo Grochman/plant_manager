@@ -1,3 +1,4 @@
+#---------------------- users ----------------------
 GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa
 
 ###
@@ -47,25 +48,12 @@ Content-Type: image/png
 --boundary--
 
 ###
-GET http://localhost:9080/plant_manager/api/plants
-
-###
-
-GET http://localhost:9080/plant_manager/api/plants/4521ad6d-506c-40c8-9f70-c7ebd6c1a000
-
-###
-
-GET http://localhost:9080/plant_manager/api/plants/34593daf-0213-408d-a905-b299eeae2833
-
-###
-#---------------------------------------------------------
+#---------------------- species ----------------------
 # all species
-
 GET http://localhost:9080/plant_manager/api/species
 
 ###
 # existing species
-
 GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c
 
 ###
@@ -74,12 +62,10 @@ DELETE http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-6
 
 ###
 # non exitsitn species 404
-
 GET http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
 
 ###
 # create new species
-
 PUT http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
 Content-Type: application/json
 
@@ -95,7 +81,6 @@ Content-Type: application/json
 
 ###
 # update species.
-
 PATCH http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
 Content-Type: application/json
 
@@ -103,6 +88,49 @@ Content-Type: application/json
   "fullName": "Changed full name",
   "commonName": "Changed common name",
   "description": "Changed lorem ipsum"
+}
+
+###
+#---------------------- plants ----------------------
+
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants
+
+###
+# get plants from non existing species
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f455/plants
+
+###
+# get exising plant
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c117517e
+
+###
+
+DELETE http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c117517e
+
+###
+# get non exising plant fomr exisitng species
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c1175177
+
+###
+# create new plant
+PUT http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c1175177
+Content-Type: application/json
+
+{
+  "name": "Default name",
+  "description": "lorem ipsum",
+  "age": 24
+}
+
+###
+# update plant
+PATCH http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c117517e
+Content-Type: application/json
+
+{
+  "name": "Changed full name",
+  "description": "Changed lorem ipsum",
+  "age": 0
 }
 
 ###

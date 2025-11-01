@@ -4,20 +4,18 @@ import com.example.plant_manager.plant.dto.PutPlantRequest;
 import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.species.entity.Species;
 
-import java.util.UUID;
-import java.util.function.BiFunction;
+import java.util.UUID;;
 
-public class RequestToPlantFunction  implements BiFunction<UUID, PutPlantRequest, Plant> {
+public class RequestToPlantFunction {
 
-    @Override
-    public Plant apply(UUID id, PutPlantRequest request) {
+    public Plant apply(UUID id, UUID speciesId, PutPlantRequest request) {
         return Plant.builder()
                 .id(id)
                 .name(request.getName())
                 .description(request.getDescription())
                 .age(request.getAge())
                 .species(Species.builder()
-                        .id(request.getSpecies())
+                        .id(speciesId)
                         .build())
                 .build();
     }

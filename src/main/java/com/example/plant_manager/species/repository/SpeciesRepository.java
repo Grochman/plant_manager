@@ -2,7 +2,6 @@ package com.example.plant_manager.species.repository;
 
 import com.example.plant_manager.datastore.DataStore;
 import com.example.plant_manager.species.entity.Species;
-import com.example.plant_manager.user.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.NoArgsConstructor;

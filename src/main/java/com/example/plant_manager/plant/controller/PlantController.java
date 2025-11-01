@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
 
@@ -45,43 +44,40 @@ public class PlantController {
     }
 
     @GET
-    @Path("/plants")
+    @Path("/species/{speciesId}/plants")
     @Produces(MediaType.APPLICATION_JSON)
-    public GetPlantsResponse getPlants() {
-        return factory.plantsToResponse().apply(service.findAll());
+    public GetPlantsResponse getPlants(@PathParam("speciesId") UUID id) {
+        return service.findAllBySpecies(id)
+                .map(factory.plantsToResponse())
+                .orElseThrow(NotFoundException::new);
     }
 
     @GET
-    @Path("/plants/{id}")
+    @Path("/species/{speciesId}/plants/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public GetPlantResponse getPlant(@PathParam("id") UUID id) {
-        return service.find(id)
+    public GetPlantResponse getPlant(@PathParam("id") UUID id, @PathParam("speciesId") UUID speciesId) {
+        return service.findByIdAndSpecies(id, speciesId)
                 .map(factory.plantToResponse())
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PUT
-    @Path("/plants/{id}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    @SneakyThrows
-    public void putPlant(@PathParam("id") UUID id, PutPlantRequest request) {
-        try {
-            service.create(factory.requestToPlant().apply(id, request));
-            response.setHeader("Location", uriInfo.getBaseUriBuilder()
-                    .path(PlantController.class, "getPlant")
-                    .build(id)
-                    .toString());
-            throw new WebApplicationException(Response.Status.CREATED);
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
-        }
+    @DELETE
+    @Path("/species/{speciesId}/plants/{id}")
+    public void deletePlant(@PathParam("id") UUID id, @PathParam("speciesId") UUID speciesId) {
+        service.findByIdAndSpecies(id, speciesId)
+                .ifPresentOrElse(
+                        entity -> service.delete(id),
+                        () -> {
+                            throw new NotFoundException();
+                        }
+                );
     }
 
     @PATCH
-    @Path("/plants/{id}")
+    @Path("/species/{speciesId}/plants/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void patchPlant(@PathParam("id") UUID id, PatchPlantRequest request) {
-        service.find(id).ifPresentOrElse(
+    public void patchPlant(@PathParam("id") UUID id, @PathParam("speciesId") UUID speciesId, PatchPlantRequest request) {
+        service.findByIdAndSpecies(id, speciesId).ifPresentOrElse(
                 entity -> service.update(factory.updatePlant().apply(entity, request)),
                 () -> {
                     throw new NotFoundException();
@@ -89,15 +85,16 @@ public class PlantController {
         );
     }
 
-    @DELETE
-    @Path("/plants/{id}")
-    public void deletePlant(@PathParam("id") UUID id) {
-        service.find(id).ifPresentOrElse(
-                entity -> service.delete(id),
-                () -> {
-                    throw new NotFoundException();
-                }
-        );
+    @PUT
+    @Path("/species/{speciesId}/plants/{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @SneakyThrows
+    public void putPlant(@PathParam("id") UUID id, @PathParam("speciesId") UUID speciesId, PutPlantRequest request) {
+        try {
+            service.create(factory.requestToPlant().apply(id, speciesId, request));
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException(ex);
+        }
     }
 }
 
