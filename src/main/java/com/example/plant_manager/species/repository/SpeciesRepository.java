@@ -1,9 +1,9 @@
 package com.example.plant_manager.species.repository;
 
-import com.example.plant_manager.datastore.DataStore;
 import com.example.plant_manager.species.entity.Species;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -13,24 +13,24 @@ import java.util.UUID;
 @ApplicationScoped
 @NoArgsConstructor(force = true)
 public class SpeciesRepository {
-    private final DataStore dataStore;
+    private EntityManager em;
 
-    @Inject
-    public SpeciesRepository(DataStore dataStore) {this.dataStore = dataStore;}
+    @PersistenceContext
+    public void setEm(EntityManager em) {this.em = em;}
 
     public Optional<Species> find(UUID id) {
-        return dataStore.findSpecies(id);
+        return  Optional.ofNullable(em.find(Species.class, id));
     }
 
     public List<Species> findAll() {
-        return dataStore.findAllSpecies();
+        return em.createQuery("select s from Species s", Species.class).getResultList();
     }
 
     public void create(Species entity)  throws IllegalArgumentException {
-        dataStore.createSpecies(entity);
+        em.persist(entity);
     }
 
-    public void update(Species entity)  throws IllegalArgumentException { dataStore.updateSpecies(entity);}
+    public void update(Species entity)  throws IllegalArgumentException { em.merge(entity);}
 
-    public void delete(UUID id) { dataStore.deleteSpecies(id);}
+    public void delete(UUID id) { em.remove(em.find(Species.class, id));}
 }

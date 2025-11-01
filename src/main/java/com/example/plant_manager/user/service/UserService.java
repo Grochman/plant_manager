@@ -3,8 +3,8 @@ package com.example.plant_manager.user.service;
 import com.example.plant_manager.user.entity.User;
 import com.example.plant_manager.user.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -29,11 +29,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public void create(User user) {
         userRepository.create(user);
     }
 
+    @Transactional
     public void update(User user) {userRepository.update(user);}
 
+    @Transactional
     public void delete(UUID id) {userRepository.delete(id);}
 }

@@ -1,6 +1,7 @@
 package com.example.plant_manager.species.entity;
 
 import com.example.plant_manager.plant.entity.Plant;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,14 +12,15 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString(exclude = "plantList")
 @Builder
-@EqualsAndHashCode(exclude = "plantList")
+@Entity
+@Table(name = "species")
 public class Species implements Serializable {
     public enum LightType{
         LOW, MEDIUM, HIGH;
     }
 
+    @Id
     private UUID id;
     private String fullName;
     private String commonName;
@@ -27,6 +29,10 @@ public class Species implements Serializable {
     private Integer wateringRateInDays;
     private LightType lightType;
     private String origin;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "species", cascade = CascadeType.REMOVE)
     private List<Plant> plantList;
 }
 

@@ -5,6 +5,7 @@ import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.repository.SpeciesRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -29,11 +30,14 @@ public class SpeciesService {
         return speciesRepository.findAll();
     }
 
+    @Transactional
     public void create(Species species) {
         speciesRepository.create(species);
     }
 
+    @Transactional
     public void update(Species species) {speciesRepository.update(species);}
 
+    @Transactional
     public void delete(UUID id) {speciesRepository.delete(id);}
 }

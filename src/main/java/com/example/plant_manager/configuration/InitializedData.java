@@ -13,7 +13,6 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletContext;
 import lombok.SneakyThrows;
-import lombok.extern.java.Log;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -79,7 +78,7 @@ public class InitializedData {
         userService.create(kevin);
         userService.create(barbados);
         userService.create(cyryl);
-
+/*
         Species ficus = Species.builder()
                 .id(UUID.fromString("83da3ba6-c7e4-4dfe-846a-64284677f45c"))
                 .fullName("Ficus lyrata")
@@ -140,7 +139,7 @@ public class InitializedData {
         plantService.create(testPlant2);
         plantService.create(kevinFicus);
         plantService.create(testPlant);
-
+*/
         requestContextController.deactivate();
   }
 

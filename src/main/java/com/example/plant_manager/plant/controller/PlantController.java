@@ -8,15 +8,19 @@ import com.example.plant_manager.plant.dto.PutPlantRequest;
 import com.example.plant_manager.plant.service.PlantService;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Path("")
+@Log
 public class PlantController {
 
     private final PlantService service;
@@ -92,8 +96,12 @@ public class PlantController {
     public void putPlant(@PathParam("id") UUID id, @PathParam("speciesId") UUID speciesId, PutPlantRequest request) {
         try {
             service.create(factory.requestToPlant().apply(id, speciesId, request));
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+        } catch (TransactionalException ex) {
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 }

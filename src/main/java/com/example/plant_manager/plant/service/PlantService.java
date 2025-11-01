@@ -7,6 +7,7 @@ import com.example.plant_manager.species.repository.SpeciesRepository;
 import com.example.plant_manager.species.service.SpeciesService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -43,12 +44,14 @@ public class PlantService {
                 .flatMap(species -> plantRepository.findByIdAndSpecies(id, species));
     }
 
-
+    @Transactional
     public void create(Plant plant) {
         plantRepository.create(plant);
     }
 
+    @Transactional
     public void update(Plant plant) {plantRepository.update(plant);}
 
+    @Transactional
     public void delete(UUID id) {plantRepository.delete(id);}
 }
