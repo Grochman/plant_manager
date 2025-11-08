@@ -78,7 +78,7 @@ public class InitializedData {
         userService.create(kevin);
         userService.create(barbados);
         userService.create(cyryl);
-/*
+
         Species ficus = Species.builder()
                 .id(UUID.fromString("83da3ba6-c7e4-4dfe-846a-64284677f45c"))
                 .fullName("Ficus lyrata")
@@ -108,8 +108,8 @@ public class InitializedData {
                 .lastWateringDate(LocalDate.of(2025, 10, 10))
                 .description("A thriving Monstera kept near the living room window.")
                 .age(2)
-                .owner(kevin)
-                .species(ficus)
+                //.owner(kevin)
+                //.species(ficus)
                 .build();
 
         Plant testPlant = Plant.builder()
@@ -118,8 +118,8 @@ public class InitializedData {
                 .lastWateringDate(LocalDate.of(2025, 10, 10))
                 .description("A thriving Monstera kept near the living room window.")
                 .age(2)
-                .owner(kevin)
-                .species(ficus)
+                //.owner(kevin)
+                //.species(ficus)
                 .build();
 
         Plant testPlant2 = Plant.builder()
@@ -128,18 +128,18 @@ public class InitializedData {
                 .lastWateringDate(LocalDate.of(2025, 10, 10))
                 .description("A thriving Monstera kept near the living room window.")
                 .age(2)
-                .owner(kevin)
-                .species(ficus)
+                //.owner(kevin)
+                //.species(ficus)
                 .build();
 
-        ficus.setPlantList(new ArrayList<>(List.of(kevinFicus, testPlant, testPlant2)));
+        //ficus.setPlantList(new ArrayList<>(List.of(kevinFicus, testPlant, testPlant2)));
         speciesService.create(ficus);
         speciesService.create(testSpecies);
 
         plantService.create(testPlant2);
         plantService.create(kevinFicus);
         plantService.create(testPlant);
-*/
+
         requestContextController.deactivate();
   }
 

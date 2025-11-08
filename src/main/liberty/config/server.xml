@@ -10,7 +10,7 @@
         <feature>persistence-3.1</feature>
     </featureManager>
 
-    <dataSource id="PlantManagerDataSource" jndiName="jdbc/PlantManagerPlants">
+    <dataSource id="PlantManagerDB" jndiName="jdbc/PlantManagerDB">
         <jdbcDriver javax.sql.XADataSource="org.h2.jdbcx.JdbcDataSource"
                     javax.sql.ConnectionPoolDataSource="org.h2.jdbcx.JdbcDataSource"
                     javax.sql.DataSource="org.h2.jdbcx.JdbcDataSource"
@@ -22,4 +22,5 @@
     <library id="H2JDBCLib">
         <fileset dir="${wlp.install.dir}/usr/servers/defaultServer/lib/global/" includes="h2-2.2.220.jar"/>
     </library>
+
 </server>

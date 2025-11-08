@@ -27,10 +27,10 @@ public class Plant implements Serializable {
     private Integer age;
 
     @ManyToOne
-    @JoinColumn(name = "user_name")
+    @JoinColumn(name = "owner_id")
     private User owner;
 
     @ManyToOne
-    @JoinColumn(name = "species")
+    @JoinColumn(name = "species_id")
     private Species species;
 }

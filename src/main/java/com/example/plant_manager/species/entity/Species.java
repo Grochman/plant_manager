@@ -32,7 +32,7 @@ public class Species implements Serializable {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "species", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "species", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Plant> plantList;
 }
 

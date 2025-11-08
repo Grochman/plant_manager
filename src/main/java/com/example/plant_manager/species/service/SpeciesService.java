@@ -1,6 +1,5 @@
 package com.example.plant_manager.species.service;
 
-import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.repository.SpeciesRepository;
 import jakarta.enterprise.context.ApplicationScoped;

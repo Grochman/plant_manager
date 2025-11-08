@@ -14,7 +14,7 @@ import java.util.*;
 public class UserRepository {
     private EntityManager em;
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "plantsPu")
     public void setEm(EntityManager em) {this.em = em;}
 
     public Optional<User> find(UUID id) {
@@ -34,6 +34,6 @@ public class UserRepository {
     }
 
     public void delete(UUID id) {
-        em.remove(em.find(Character.class, id));
+        em.remove(em.find(User.class, id));
     }
 }
