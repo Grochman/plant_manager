@@ -14,7 +14,7 @@ import java.util.*;
 public class UserRepository {
     private EntityManager em;
 
-    @PersistenceContext(unitName = "plantsPu")
+    @PersistenceContext
     public void setEm(EntityManager em) {this.em = em;}
 
     public Optional<User> find(UUID id) {

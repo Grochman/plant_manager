@@ -2,9 +2,8 @@ package com.example.plant_manager.plant.service;
 
 import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.plant.repository.PlantRepository;
-import com.example.plant_manager.species.model.SpeciessModel;
+import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.repository.SpeciesRepository;
-import com.example.plant_manager.species.service.SpeciesService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -53,5 +52,14 @@ public class PlantService {
     public void update(Plant plant) {plantRepository.update(plant);}
 
     @Transactional
-    public void delete(UUID id) {plantRepository.delete(id);}
+    public void delete(UUID id) {
+        Plant plant = plantRepository.find(id).orElse(null);
+        if(plant != null) {
+            Species species = plant.getSpecies();
+            if(species != null) {
+                species.getPlantList().remove(plant);
+            };
+            plantRepository.delete(id);
+        }
+    }
 }

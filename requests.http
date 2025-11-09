@@ -124,7 +124,7 @@ Content-Type: application/json
 
 ###
 # update plant
-PATCH http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c117517e
+PATCH http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c1175177
 Content-Type: application/json
 
 {
