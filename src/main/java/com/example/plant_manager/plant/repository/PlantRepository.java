@@ -36,7 +36,9 @@ public class PlantRepository {
         em.merge(entity);
     }
 
-    public void delete(UUID id) {em.remove(em.find(Plant.class, id));}
+    public void delete(UUID id) {
+        em.remove(em.find(Plant.class, id));
+    }
 
     public List<Plant> findAllBySpecies(Species species) {
         return findAll().stream()

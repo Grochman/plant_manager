@@ -46,6 +46,8 @@ public class PlantService {
     @Transactional
     public void create(Plant plant) {
         plantRepository.create(plant);
+        Species s = speciesRepository.find(plant.getSpecies().getId()).orElse(null);
+        s.getPlantList().add(plant);
     }
 
     @Transactional

@@ -1,8 +1,10 @@
 package com.example.plant_manager.plant.view;
 
 import com.example.plant_manager.component.ModelFunctionFactory;
+import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.plant.model.PlantCreateModel;
 import com.example.plant_manager.plant.service.PlantService;
+import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.model.SpeciesModel;
 import com.example.plant_manager.species.service.SpeciesService;
 import jakarta.enterprise.context.Conversation;
@@ -70,7 +72,10 @@ public class PlantCreate implements Serializable {
     }
 
     public String saveAction() {
-        plantService.create(factory.modelToPlant().apply(plant));
+        Plant p = factory.modelToPlant().apply(plant);
+        Species s = speciesService.find(p.getSpecies().getId()).orElse(null);
+        p.setSpecies(s);
+        plantService.create(p);
         conversation.end();
         return "/species/species_list.xhtml?faces-redirect=true";
     }
