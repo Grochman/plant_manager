@@ -7,6 +7,7 @@ import com.example.plant_manager.plant.service.PlantService;
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.model.SpeciesModel;
 import com.example.plant_manager.species.service.SpeciesService;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.Conversation;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
@@ -25,9 +26,9 @@ import java.util.stream.Collectors;
 @Log
 @NoArgsConstructor(force = true)
 public class PlantCreate implements Serializable {
-    private final PlantService plantService;
+    private PlantService plantService;
 
-    private final SpeciesService speciesService;
+    private SpeciesService speciesService;
 
     private final ModelFunctionFactory factory;
 
@@ -41,16 +42,19 @@ public class PlantCreate implements Serializable {
 
     @Inject
     public PlantCreate(
-            PlantService plantService,
-            SpeciesService speciesService,
             ModelFunctionFactory factory,
             Conversation conversation
     ) {
-        this.plantService = plantService;
         this.factory = factory;
-        this.speciesService = speciesService;
         this.conversation = conversation;
     }
+
+    @EJB
+    public void setPlantService(PlantService plantService) {this.plantService = plantService;}
+
+    @EJB
+    public void setSpeciesService(SpeciesService speciesService) {this.speciesService = speciesService;}
+
 
     public void init() {
 

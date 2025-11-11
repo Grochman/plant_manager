@@ -6,12 +6,11 @@ import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.service.SpeciesService;
 import com.example.plant_manager.user.entity.User;
 import com.example.plant_manager.user.service.UserService;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.Initialized;
-import jakarta.enterprise.context.control.RequestContextController;
-import jakarta.enterprise.event.Observes;
-import jakarta.inject.Inject;
-import jakarta.servlet.ServletContext;
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.nio.file.Files;
@@ -22,57 +21,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@ApplicationScoped
-public class InitializedData {
-    private final UserService userService;
-    private final RequestContextController requestContextController;
-    private final PlantService plantService;
-    private final SpeciesService speciesService;
-    private final ServletContext context;
-    @Inject
-    public InitializedData(
-            UserService userService,
-            RequestContextController requestContextController,
-            PlantService plantService, SpeciesService speciesService, ServletContext servletContext) {
-        this.userService = userService;
-        this.requestContextController = requestContextController;
-        this.speciesService = speciesService;
-        this.plantService = plantService;
-        this.context = servletContext;
-    }
+@Singleton
+@Startup
+@NoArgsConstructor
+public class InitData {
 
-    public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        init();
-    }
+    private UserService userService;
+    private PlantService plantService;
+    private SpeciesService speciesService;
 
-    @SneakyThrows
-    private void init() {
-        requestContextController.activate();
+    @EJB
+    public void setUserService(UserService userService) {this.userService = userService;}
 
-        String avatarDir = context.getInitParameter("avatarDir");
+    @EJB
+    public void setPlantService(PlantService plantService) {this.plantService = plantService;}
+
+    @EJB
+    public void setSpeciesService(SpeciesService speciesService) {this.speciesService = speciesService;}
+
+    //@Inject
+    //private ServletContext context;
+
+    //public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {}
+
+
+    @PostConstruct
+    public void init() {
+        System.out.println(">>> TestSingleton init");
+        //String avatarDir = context.getInitParameter("avatarDir");
 
         User alvin = User.builder()
                 .id(UUID.fromString("c4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                 .name("Alvin")
-                .avatar(loadBytes(avatarDir + "1.jpg"))
+                //      .avatar(loadBytes(avatarDir + "1.jpg"))
                 .build();
 
         User cyryl = User.builder()
                 .id(UUID.fromString("a4804e0f-769e-4ab9-9ebe-0578fb4f00a6"))
                 .name("Cyryl")
-                .avatar(loadBytes(avatarDir + "1.jpg"))
+                //    .avatar(loadBytes(avatarDir + "1.jpg"))
                 .build();
 
         User kevin = User.builder()
                 .id(UUID.fromString("81e1c2a9-7f57-439b-b53d-6db88b071e4e"))
                 .name("Kevin")
-                .avatar(loadBytes(avatarDir + "2.JPG"))
+                //  .avatar(loadBytes(avatarDir + "2.JPG"))
                 .build();
 
         User barbados = User.builder()
                 .id(UUID.fromString("ed6cfb2a-cad7-47dd-9b56-9d1e3c7a4197"))
                 .name("Barbados")
                 .build();
+
 
         userService.create(alvin);
         userService.create(kevin);
@@ -135,10 +135,7 @@ public class InitializedData {
         ficus.setPlantList(new ArrayList<>(List.of(kevinFicus, testPlant, testPlant2)));
         speciesService.create(ficus);
         speciesService.create(testSpecies);
-
-        requestContextController.deactivate();
-  }
-
+    }
     @SneakyThrows
     private byte[] loadBytes(String location) {
         Path path = Paths.get(location);

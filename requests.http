@@ -58,7 +58,7 @@ GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-6428
 
 ###
 
-DELETE http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c
+DELETE http://localhost:9080/plant_manager/api/species/f73ef54d-7e7b-43c3-af66-79fc90ec06d3
 
 ###
 # non exitsitn species 404

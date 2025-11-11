@@ -3,6 +3,7 @@ package com.example.plant_manager.plant.view;
 import com.example.plant_manager.component.ModelFunctionFactory;
 import com.example.plant_manager.plant.model.PlantsModel;
 import com.example.plant_manager.plant.service.PlantService;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -10,17 +11,19 @@ import jakarta.inject.Named;
 @RequestScoped
 @Named
 public class PlantList {
-    private final PlantService service;
+    private PlantService service;
 
     private PlantsModel plants;
 
     private final ModelFunctionFactory factory;
 
     @Inject
-    public PlantList(PlantService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public PlantList(ModelFunctionFactory factory) {
         this.factory = factory;
     }
+
+    @EJB
+    public void setService(PlantService service) {this.service = service;}
 
     public PlantsModel getPlants() {
         if (plants == null) {

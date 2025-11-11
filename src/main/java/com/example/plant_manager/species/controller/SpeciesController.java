@@ -6,6 +6,7 @@ import com.example.plant_manager.species.dto.GetSpeciesResponse;
 import com.example.plant_manager.species.dto.PatchSpeciesRequest;
 import com.example.plant_manager.species.dto.PutSpeciesRequest;
 import com.example.plant_manager.species.service.SpeciesService;
+import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.TransactionalException;
@@ -24,7 +25,7 @@ import java.util.logging.Level;
 @Log
 public class SpeciesController {
 
-    private final SpeciesService service;
+    private SpeciesService service;
 
     private final DtoFunctionFactory factory;
 
@@ -39,14 +40,15 @@ public class SpeciesController {
 
     @Inject
     public SpeciesController(
-            SpeciesService service,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo
     ) {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
     }
+
+    @EJB
+    public void setService(SpeciesService service) {this.service = service;}
 
     @GET
     @Path("/species")

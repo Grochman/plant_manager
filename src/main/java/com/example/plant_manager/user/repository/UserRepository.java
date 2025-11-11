@@ -2,6 +2,7 @@ package com.example.plant_manager.user.repository;
 
 import com.example.plant_manager.user.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.*;
 import java.util.*;
 
-@ApplicationScoped
+@Dependent
 @NoArgsConstructor(force = true)
 public class UserRepository {
     private EntityManager em;

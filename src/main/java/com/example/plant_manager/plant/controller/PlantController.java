@@ -6,6 +6,8 @@ import com.example.plant_manager.plant.dto.GetPlantsResponse;
 import com.example.plant_manager.plant.dto.PatchPlantRequest;
 import com.example.plant_manager.plant.dto.PutPlantRequest;
 import com.example.plant_manager.plant.service.PlantService;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.TransactionalException;
@@ -23,7 +25,7 @@ import java.util.logging.Level;
 @Log
 public class PlantController {
 
-    private final PlantService service;
+    private PlantService service;
 
     private final DtoFunctionFactory factory;
 
@@ -38,14 +40,15 @@ public class PlantController {
 
     @Inject
     public PlantController(
-            PlantService service,
             DtoFunctionFactory factory,
             @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo
     ) {
-        this.service = service;
         this.factory = factory;
         this.uriInfo = uriInfo;
     }
+
+    @EJB
+    public void setService(PlantService service) {this.service = service;}
 
     @GET
     @Path("/species/{speciesId}/plants")
@@ -96,7 +99,7 @@ public class PlantController {
     public void putPlant(@PathParam("id") UUID id, @PathParam("speciesId") UUID speciesId, PutPlantRequest request) {
         try {
             service.create(factory.requestToPlant().apply(id, speciesId, request));
-        } catch (TransactionalException ex) {
+        } catch (EJBException ex) {
             if (ex.getCause() instanceof IllegalArgumentException) {
                 log.log(Level.WARNING, ex.getMessage(), ex);
                 throw new BadRequestException(ex);

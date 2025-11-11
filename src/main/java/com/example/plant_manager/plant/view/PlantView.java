@@ -4,6 +4,7 @@ import com.example.plant_manager.component.ModelFunctionFactory;
 import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.plant.model.PlantModel;
 import com.example.plant_manager.plant.service.PlantService;
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Named
 public class PlantView implements Serializable {
 
-    private final PlantService service;
+    private PlantService service;
 
     private final ModelFunctionFactory factory;
 
@@ -33,10 +34,12 @@ public class PlantView implements Serializable {
     private PlantModel plant;
 
     @Inject
-    public PlantView(PlantService service, ModelFunctionFactory factory) {
-        this.service = service;
+    public PlantView(ModelFunctionFactory factory) {
         this.factory = factory;
     }
+
+    @EJB
+    public void setService(PlantService service) {this.service = service;}
 
     public void init() throws IOException {
         Optional<Plant> plant = service.find(id);

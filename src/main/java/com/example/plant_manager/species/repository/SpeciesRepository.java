@@ -2,6 +2,7 @@ package com.example.plant_manager.species.repository;
 
 import com.example.plant_manager.species.entity.Species;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@Dependent
 @NoArgsConstructor(force = true)
 public class SpeciesRepository {
     private EntityManager em;

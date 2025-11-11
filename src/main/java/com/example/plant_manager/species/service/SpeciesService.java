@@ -2,16 +2,19 @@ package com.example.plant_manager.species.service;
 
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.repository.SpeciesRepository;
+import jakarta.ejb.Local;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class SpeciesService {
     private final SpeciesRepository speciesRepository;
@@ -29,14 +32,11 @@ public class SpeciesService {
         return speciesRepository.findAll();
     }
 
-    @Transactional
     public void create(Species species) {
         speciesRepository.create(species);
     }
 
-    @Transactional
     public void update(Species species) {speciesRepository.update(species);}
 
-    @Transactional
     public void delete(UUID id) {speciesRepository.delete(id);}
 }

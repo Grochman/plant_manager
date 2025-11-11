@@ -8,6 +8,7 @@ import com.example.plant_manager.plant.service.PlantService;
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.model.SpeciesModel;
 import com.example.plant_manager.species.service.SpeciesService;
+import jakarta.ejb.EJB;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -25,7 +26,7 @@ import java.util.UUID;
 @Named
 public class SpeciesView implements Serializable {
 
-    private final SpeciesService service;
+    private SpeciesService service;
 
     private final ModelFunctionFactory factory;
 
@@ -39,11 +40,13 @@ public class SpeciesView implements Serializable {
     private SpeciesModel species;
 
     @Inject
-    public SpeciesView(SpeciesService service, ModelFunctionFactory factory,  PlantService plantService) {
-        this.service = service;
+    public SpeciesView(ModelFunctionFactory factory,  PlantService plantService) {
         this.factory = factory;
         this.plantService = plantService;
     }
+
+    @EJB
+    public void setService(SpeciesService service) {this.service = service;}
 
     public void init() throws IOException {
         Optional<Species> species = service.find(id);
