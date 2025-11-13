@@ -1,73 +1,49 @@
+###
 #---------------------- users ----------------------
-GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa
-
-###
 GET http://localhost:9080/plant_manager/api/users
-
 ###
+// @no-cookie-jar
+PUT http://localhost:9080/plant_manager/api/users/9b988872-e8fb-49d7-9152-10e4cfde6776
+Content-Type: application/json
 
-GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6
+{
+  "name": "lepin3",
+  "login": "lepin3",
+  "password": "lepinlepin"
+}
 
-###
-
-GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
-
-###
-
-GET http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa/avatar
-
-###
-
-DELETE http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
-
-###
-
-DELETE http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00aa/avatar
-
-###
-
-PUT http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
-Content-Type: multipart/form-data; boundary=boundary
-
---boundary
-Content-Disposition: form-data; name="avatar"; filename="sigrid.png"
-
-< C:\\Users\\groch\\Desktop\\jee\\plant_manager\\test_avatars\\sigrid.png
---boundary--
-
-###
-
-PATCH http://localhost:9080/plant_manager/api/users/c4804e0f-769e-4ab9-9ebe-0578fb4f00a6/avatar
-Content-Type: multipart/form-data; boundary=boundary
-
---boundary
-Content-Disposition: form-data; name="avatar"; filename="calvian.png"
-Content-Type: image/png
-
-< C:/Users/groch/Desktop/jee/plant_manager/test_avatars/calvian.png
---boundary--
 
 ###
 #---------------------- species ----------------------
 # all species
-GET http://localhost:9080/plant_manager/api/species
 
+// @no-cookie-jar
+GET http://localhost:9080/plant_manager/api/species
+Authorization: Basic bGVwaW4zOmxlcGlubGVwaW4=
+//Authorization: Basic a2V2aW46dXNlcnVzZXI= //useruser kevin
+//Authorization: Basic YWRtaW46YWRtaW5hZG1pbg== //adminadmin
 ###
 # existing species
-GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c
 
+// @no-cookie-jar
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c
+Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 ###
 
-DELETE http://localhost:9080/plant_manager/api/species/f73ef54d-7e7b-43c3-af66-79fc90ec06d3
-
+// @no-cookie-jar
+DELETE http://localhost:9080/plant_manager/api/species/a07d4383-284f-490d-9817-cc4c362d5f59
+Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 ###
 # non exitsitn species 404
+// @no-cookie-jar
 GET http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
 
 ###
 # create new species
+// @no-cookie-jar
 PUT http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
 Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 
 {
   "lightType": "MEDIUM",
@@ -81,6 +57,7 @@ Content-Type: application/json
 
 ###
 # update species.
+// @no-cookie-jar
 PATCH http://localhost:9080/plant_manager/api/species/9b988872-e8fb-49d7-9152-10e4cfde6886
 Content-Type: application/json
 
@@ -92,32 +69,41 @@ Content-Type: application/json
 
 ###
 #---------------------- plants ----------------------
-
+// @no-cookie-jar
 GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants
-
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+//Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 ###
 # get plants from non existing species
+// @no-cookie-jar
 GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f455/plants
-
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
 ###
 # get exising plant
-GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c117517e
+// @no-cookie-jar
+GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/2dfa8535-39af-4fbb-9995-0e8340710f04
+//Authorization: Basic a2V2aW46dXNlcnVzZXI=
+//Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 
 ###
-
+// @no-cookie-jar
 DELETE http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c117517e
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+//Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 
 ###
 # get non exising plant fomr exisitng species
+// @no-cookie-jar
 GET http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c1175177
 
 ###
 # create new plant
-PUT http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c1175177
+PUT http://localhost:9080/plant_manager/api/species/83da3ba6-c7e4-4dfe-846a-64284677f45c/plants/0b8c0653-b196-4ac4-8015-3e43c1175178
 Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW5hZG1pbg==
 
 {
-  "name": "Default name",
+  "name": "Default name22",
   "description": "lorem ipsum",
   "age": 24
 }

@@ -4,6 +4,7 @@ import com.example.plant_manager.user.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,16 @@ public class UserRepository {
 
     public List<User> findAll() {
         return em.createQuery("select u from User u", User.class).getResultList();
+    }
+
+    public Optional<User> findByLogin(String login) {
+        try {
+            return Optional.of(em.createQuery("select u from User u where u.login = :login", User.class)
+                    .setParameter("login", login)
+                    .getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     public void create(User entity)  throws IllegalArgumentException {

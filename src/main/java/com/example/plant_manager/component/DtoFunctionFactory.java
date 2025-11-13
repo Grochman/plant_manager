@@ -9,6 +9,7 @@ import com.example.plant_manager.species.dto.functions.MultipleSPeciesToResponse
 import com.example.plant_manager.species.dto.functions.RequestToSpeciesFunction;
 import com.example.plant_manager.species.dto.functions.SpeciesToResponseFunction;
 import com.example.plant_manager.species.dto.functions.UpdateSpeciesWithRequestFunction;
+import com.example.plant_manager.user.dto.functions.RequestToUserFunction;
 import com.example.plant_manager.user.dto.functions.UserToResponseFunction;
 import com.example.plant_manager.user.dto.functions.UsersToResponseFunction;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,6 +29,8 @@ public class DtoFunctionFactory {
     public PlantToResponseFunction plantToResponse() {return new PlantToResponseFunction();}
 
     public RequestToPlantFunction requestToPlant() {return new RequestToPlantFunction();}
+
+    public RequestToUserFunction requestToUser() {return new RequestToUserFunction();}
 
     public UpdatePlantWithRequestFunction updatePlant() {return new UpdatePlantWithRequestFunction();}
 

@@ -1,4 +1,4 @@
-package com.example.plant_manager.plant.dto;
+package com.example.plant_manager.user.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,9 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class PutPlantRequest {
-    private String name;
-    private String description;
-    private Integer age;
+public class PutUserRequest {
+    private String login;
+    private String password;
 }
-

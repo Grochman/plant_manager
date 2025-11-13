@@ -25,7 +25,24 @@ public class PlantRepository {
         return  Optional.ofNullable(em.find(Plant.class, id));
     }
 
+    public Optional<Plant> findByIdAndUser(UUID id, String login) {
+        try {
+            Plant plant = em.createQuery(
+                            "SELECT p FROM Plant p WHERE p.id = :id AND p.owner.login = :login", Plant.class)
+                    .setParameter("id", id)
+                    .setParameter("login", login)
+                    .getSingleResult();
+            return Optional.of(plant);
+        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
     public List<Plant> findAll() {
+        return em.createQuery("select p from Plant p", Plant.class).getResultList();
+    }
+
+    public List<Plant> find() {
         return em.createQuery("select p from Plant p", Plant.class).getResultList();
     }
 
@@ -41,16 +58,45 @@ public class PlantRepository {
         em.remove(em.find(Plant.class, id));
     }
 
-    public List<Plant> findAllBySpecies(Species species) {
-        return findAll().stream()
-                .filter(plant -> species.getId().equals(plant.getSpecies().getId()))
-                .collect(Collectors.toList());
+    public List<Plant> findAllBySpecies(UUID id) {
+        return em.createQuery(
+                        "SELECT p FROM Plant p WHERE p.species.id = :speciesId", Plant.class)
+                .setParameter("speciesId", id)
+                .getResultList();
     }
 
-    public Optional<Plant> findByIdAndSpecies(UUID id, Species species) {
-        return findAll().stream()
-                .filter(plant -> species.getId().equals(plant.getSpecies().getId()))
-                .filter(plant -> plant.getId().equals(id))
-                .findFirst();
+    public List<Plant> findAllBySpeciesAndUser(UUID speciesId, String login) {
+        return em.createQuery(
+                        "SELECT p FROM Plant p WHERE p.species.id = :speciesId AND p.owner.login = :login", Plant.class)
+                .setParameter("speciesId", speciesId)
+                .setParameter("login", login)
+                .getResultList();
+    }
+
+    public Optional<Plant> findByIdAndSpecies(UUID id, UUID speciesId) {
+        try {
+            Plant plant = em.createQuery(
+                            "SELECT p FROM Plant p WHERE p.species.id = :speciesId AND p.id = :id", Plant.class)
+                    .setParameter("speciesId", speciesId)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            return Optional.of(plant);
+        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Plant> findByIdAndSpeciesAndUser(UUID id, UUID speciesId,  String login) {
+        try {
+            Plant plant = em.createQuery(
+                            "SELECT p FROM Plant p WHERE p.species.id = :speciesId AND p.id = :id AND p.owner.login = :login", Plant.class)
+                    .setParameter("speciesId", speciesId)
+                    .setParameter("id", id)
+                    .setParameter("login", login)
+                    .getSingleResult();
+            return Optional.of(plant);
+        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

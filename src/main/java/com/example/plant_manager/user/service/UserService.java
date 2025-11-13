@@ -26,6 +26,10 @@ public class UserService {
         return userRepository.find(id);
     }
 
+    public Optional<User> find(String login) {
+        return userRepository.findByLogin(login);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }

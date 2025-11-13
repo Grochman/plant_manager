@@ -6,11 +6,12 @@ import com.example.plant_manager.plant.dto.GetPlantsResponse;
 import com.example.plant_manager.plant.dto.PatchPlantRequest;
 import com.example.plant_manager.plant.dto.PutPlantRequest;
 import com.example.plant_manager.plant.service.PlantService;
+import com.example.plant_manager.user.entity.UserRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
 
 @Path("")
 @Log
+@RolesAllowed(UserRoles.USER)
 public class PlantController {
 
     private PlantService service;

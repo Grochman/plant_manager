@@ -6,8 +6,12 @@ import com.example.plant_manager.species.dto.GetSpeciesResponse;
 import com.example.plant_manager.species.dto.PatchSpeciesRequest;
 import com.example.plant_manager.species.dto.PutSpeciesRequest;
 import com.example.plant_manager.species.service.SpeciesService;
+import com.example.plant_manager.user.entity.UserRoles;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.TransactionalException;
 import jakarta.ws.rs.*;
@@ -23,6 +27,7 @@ import java.util.logging.Level;
 
 @Path("")
 @Log
+//@RolesAllowed(UserRoles.USER)
 public class SpeciesController {
 
     private SpeciesService service;
@@ -52,15 +57,19 @@ public class SpeciesController {
 
     @GET
     @Path("/species")
+    @RolesAllowed(UserRoles.USER)
     @Produces(MediaType.APPLICATION_JSON)
     public GetMultipleSpeciesResponse getMultipleSpecies() {
+        System.out.println("<<< getMultipleSpecies");
         return factory.multipleSpeciesToResponse().apply(service.findAll());
     }
 
     @GET
     @Path("/species/{id}")
+    @RolesAllowed(UserRoles.USER)
     @Produces(MediaType.APPLICATION_JSON)
     public GetSpeciesResponse getSpecies(@PathParam("id") UUID id) {
+        System.out.println("<<< getOneSpecies");
         return service.find(id)
                 .map(factory.speciesToResponse())
                 .orElseThrow(NotFoundException::new);
@@ -68,6 +77,7 @@ public class SpeciesController {
 
     @PUT
     @Path("/species/{id}")
+    @RolesAllowed(UserRoles.ADMIN)
     @Consumes({MediaType.APPLICATION_JSON})
     @SneakyThrows
     public void putSpecies(@PathParam("id") UUID id, PutSpeciesRequest request) {
@@ -89,6 +99,7 @@ public class SpeciesController {
 
     @PATCH
     @Path("/species/{id}")
+    @RolesAllowed(UserRoles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public void patchSpecies(@PathParam("id") UUID id, PatchSpeciesRequest request) {
         service.find(id).ifPresentOrElse(
@@ -101,7 +112,9 @@ public class SpeciesController {
 
     @DELETE
     @Path("/species/{id}")
+    @RolesAllowed(UserRoles.ADMIN)
     public void deleteSpecies(@PathParam("id") UUID id) {
+        System.out.println("<<< deleteSpecies");
         service.find(id).ifPresentOrElse(
                 entity -> service.delete(id),
                 () -> {
