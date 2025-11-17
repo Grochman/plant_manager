@@ -2,6 +2,8 @@ package com.example.plant_manager.species.service;
 
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.repository.SpeciesRepository;
+import com.example.plant_manager.user.entity.UserRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Local;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
@@ -24,19 +26,24 @@ public class SpeciesService {
         this.speciesRepository = speciesRepository;
     }
 
+    @RolesAllowed(UserRoles.USER)
     public Optional<Species> find(UUID id) {
         return speciesRepository.find(id);
     }
 
+    @RolesAllowed(UserRoles.USER)
     public List<Species> findAll() {
         return speciesRepository.findAll();
     }
 
+    @RolesAllowed(UserRoles.ADMIN)
     public void create(Species species) {
         speciesRepository.create(species);
     }
 
+    @RolesAllowed(UserRoles.ADMIN)
     public void update(Species species) {speciesRepository.update(species);}
 
+    @RolesAllowed(UserRoles.ADMIN)
     public void delete(UUID id) {speciesRepository.delete(id);}
 }

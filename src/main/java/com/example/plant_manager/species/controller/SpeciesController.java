@@ -27,7 +27,6 @@ import java.util.logging.Level;
 
 @Path("")
 @Log
-//@RolesAllowed(UserRoles.USER)
 public class SpeciesController {
 
     private SpeciesService service;

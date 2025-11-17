@@ -10,6 +10,9 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.NotFoundException;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -65,40 +68,83 @@ public class PlantService {
             return Optional.empty();
         }
 
-        if(securityContext.isCallerInRole("admin")){
+        String username = getAuthenticatedUsername();
+
+        if (username == null) {
+            throw new NotAuthorizedException("User is not authenticated");
+        }
+
+        if (securityContext.isCallerInRole("admin")) {
             return plantRepository.findByIdAndSpecies(id, speciesId);
         }
-        else{
-            System.out.println(securityContext.getCallerPrincipal().getName());
-            return plantRepository.findByIdAndSpeciesAndUser(id,speciesId, securityContext.getCallerPrincipal().getName());
+
+        Optional<Plant> plant = plantRepository.findByIdAndSpecies(id, speciesId);
+
+        if (plant.isPresent() && !plant.get().getOwner().equals(username)) {
+            throw new ForbiddenException("User cannot access this plant");
         }
+
+        return plantRepository.findByIdAndSpeciesAndUser(id, speciesId, username);
     }
 
     public void create(Plant plant) {
-        User owner = userRepository.findByLogin(securityContext.getCallerPrincipal().getName()).orElse(null);
-        if (owner == null) {return;}
+        if (securityContext.getCallerPrincipal() == null) {
+            throw new NotAuthorizedException("User is not authenticated");
+        }
+
+        String username = securityContext.getCallerPrincipal().getName();
+
+        User owner = userRepository.findByLogin(username)
+                .orElseThrow(() -> new NotAuthorizedException("User not found in system"));
+
+        Species species = speciesRepository.find(plant.getSpecies().getId())
+                .orElseThrow(() -> new NotFoundException("species not found"));
 
         plant.setOwner(owner);
         plantRepository.create(plant);
-        Species s = speciesRepository.find(plant.getSpecies().getId()).orElse(null);
-        s.getPlantList().add(plant);
+
+        species.getPlantList().add(plant);
     }
 
     public void update(Plant plant) {
-        Plant p = find(plant.getId()).orElse(null);
-        if(p != null){
-            plantRepository.update(plant);
+        String username = getAuthenticatedUsername();
+
+        Plant existing = find(plant.getId())
+                .orElseThrow(() -> new NotFoundException("plant not found"));
+
+        if (!securityContext.isCallerInRole("admin")) {
+            if (!existing.getOwner().equals(username)) {
+                throw new ForbiddenException("You cannot modify this plant");
+            }
         }
+
+        plantRepository.update(plant);
     }
 
     public void delete(UUID id) {
-        Plant plant = find(id).orElse(null);
-        if(plant != null) {
-            Species species = plant.getSpecies();
-            if(species != null) {
-                species.getPlantList().remove(plant);
-            };
-            plantRepository.delete(id);
+        String username = getAuthenticatedUsername();
+
+        Plant existing = find(id)
+                .orElseThrow(() -> new NotFoundException("plant not found"));
+
+        if (!securityContext.isCallerInRole("admin")) {
+            if (!existing.getOwner().equals(username)) {
+                throw new ForbiddenException("You cannot delete this plant");
+            }
         }
+
+        Species species = existing.getSpecies();
+        if (species != null) {
+            species.getPlantList().remove(existing);
+        }
+
+        plantRepository.delete(id);
+    }
+
+    private String getAuthenticatedUsername() {
+        if (securityContext.getCallerPrincipal() == null) {
+            throw new NotAuthorizedException("User is not authenticated");
+        }
+        return securityContext.getCallerPrincipal().getName();
     }
 }
