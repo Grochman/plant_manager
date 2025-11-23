@@ -6,39 +6,42 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <ui:define name="content">
-        <h:outputStylesheet library="species" name="css/species_list.css"/><!-- Automatically relocated to head. -->
+        <h:outputStylesheet library="species" name="css/species_list.css"/>
 
         <article class="text--justified">
-            <header><h2>Species</h2></header>
+            <header><h2>#{msg['species.list.header']}</h2></header>
 
-            <h:dataTable value="#{speciesList.species.species}" var="species"
-                         styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
+            <h:form id="speciesForm">
+                <h:dataTable value="#{speciesList.species.species}" var="species"
+                             styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
-                <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    <h:outputText value="#{species.name}"/>
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">#{msg['species.field.name']}</f:facet>
+                        <h:outputText value="#{species.name}"/>
+                    </h:column>
 
-                <h:column>
-                    <f:facet name="header">View</f:facet>
-                    <h:link outcome="/species/species_view.xhtml" value="View">
-                        <f:param name="id" value="#{species.id}"/>
-                    </h:link>
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">#{msg['action.view']}</f:facet>
+                        <h:link outcome="/species/species_view.xhtml" value="#{msg['action.view']}">
+                            <f:param name="id" value="#{species.id}"/>
+                        </h:link>
+                    </h:column>
 
-                <h:column>
-                    <f:facet name="header">Delete</f:facet>
-                    <h:form>
-                        <h:commandButton styleClass="btn" value="Delete"
-                                         action="#{speciesList.deleteAction(species)}"/>
-                    </h:form>
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">#{msg['action.delete']}</f:facet>
+                        <h:commandButton styleClass="btn" value="#{msg['action.delete']}"
+                                         action="#{speciesList.deleteAction(species)}"
+                                         rendered="#{request.isUserInRole('admin')}">
+                            <f:ajax execute="@this" render="@form"/>
+                        </h:commandButton>
+                    </h:column>
 
-                <f:facet name="footer">
-                    <h:button styleClass="btn" outcome="/plant/plant_create.xhtml"
-                              value="Create new plant"/>
-                </f:facet>
-            </h:dataTable>
+                    <f:facet name="footer">
+                        <h:button styleClass="btn" outcome="/plant/plant_create.xhtml"
+                                  value="#{msg['plant.create.button']}"/>
+                    </f:facet>
+                </h:dataTable>
+            </h:form>
         </article>
     </ui:define>
 

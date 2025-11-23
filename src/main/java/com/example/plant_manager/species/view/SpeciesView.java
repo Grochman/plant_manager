@@ -1,9 +1,7 @@
 package com.example.plant_manager.species.view;
 
 import com.example.plant_manager.component.ModelFunctionFactory;
-import com.example.plant_manager.plant.entity.Plant;
-import com.example.plant_manager.plant.model.PlantModel;
-import com.example.plant_manager.plant.model.PlantsModel;
+import com.example.plant_manager.plant.model.PlantsModel; // Ważny import
 import com.example.plant_manager.plant.service.PlantService;
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.model.SpeciesModel;
@@ -27,9 +25,7 @@ import java.util.UUID;
 public class SpeciesView implements Serializable {
 
     private SpeciesService service;
-
     private final ModelFunctionFactory factory;
-
     private final PlantService plantService;
 
     @Setter
@@ -49,19 +45,27 @@ public class SpeciesView implements Serializable {
     public void setService(SpeciesService service) {this.service = service;}
 
     public void init() throws IOException {
-        Optional<Species> species = service.find(id);
-        if (species.isPresent()) {
-            this.species = factory.speciesToModel().apply(species.get());
+        Optional<Species> speciesEntity = service.find(id);
+        if (speciesEntity.isPresent()) {
+            this.species = factory.speciesToModel().apply(speciesEntity.get());
+
+            var filteredPlants = plantService.findAllBySpecies(id).orElse(java.util.Collections.emptyList());
+
+            PlantsModel plantsModel = factory.plantsToModel().apply(filteredPlants);
+            this.species.setPlants(plantsModel);
+
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Species not found");
         }
     }
 
-
     public String deleteAction(PlantsModel.Plant plant) {
         plantService.delete(plant.getId());
-        Optional<Species> updated = service.find(id);
-        updated.ifPresent(value -> this.species = factory.speciesToModel().apply(value));
-        return "species_list?faces-redirect=true";
+        try {
+            init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

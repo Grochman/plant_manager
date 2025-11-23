@@ -8,6 +8,8 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+import java.util.UUID;
+
 @RequestScoped
 @Named
 public class PlantList {
@@ -27,12 +29,14 @@ public class PlantList {
 
     public PlantsModel getPlants() {
         if (plants == null) {
-            plants = factory.plantsToModel().apply(service.findAll());
+            plants = factory.plantsToModel().apply(service.findAllForCallerPrincipal());
         }
         return plants;
     }
 
     public String deleteAction(PlantsModel.Plant plant) {
+        System.out.println("gowno22");
+
         service.delete(plant.getId());
         return "plant_list?faces-redirect=true";
     }

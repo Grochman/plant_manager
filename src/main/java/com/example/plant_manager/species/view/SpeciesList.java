@@ -1,8 +1,6 @@
 package com.example.plant_manager.species.view;
 
 import com.example.plant_manager.component.ModelFunctionFactory;
-import com.example.plant_manager.plant.model.PlantsModel;
-import com.example.plant_manager.plant.service.PlantService;
 import com.example.plant_manager.species.model.SpeciesModel;
 import com.example.plant_manager.species.model.SpeciessModel;
 import com.example.plant_manager.species.service.SpeciesService;
@@ -35,8 +33,9 @@ public class SpeciesList {
         return species;
     }
 
+    // ZMIANA: Zwracamy null zamiast stringa nawigacyjnego
     public String deleteAction(SpeciessModel.Species species) {
         service.delete(species.getId());
-        return "species_list?faces-redirect=true";
+        return null; // Pozostajemy na tym samym widoku (AJAX odświeży treść)
     }
 }

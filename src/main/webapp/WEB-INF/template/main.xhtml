@@ -8,11 +8,9 @@
 <f:view>
     <h:head>
         <meta charset="UTF-8"/>
-        <meta name="description" content="Simple RPG web application"/>
-        <meta name="keywords" content="RPG"/>
-        <meta name="author" content="Michał (psysiu) Wójcik"/>
+        <meta name="description" content="Plant Manager"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Simple RPG</title>
+        <title>#{msg['app.title']}</title>
 
         <h:outputStylesheet library="webjars" name="mdb-ui-kit/6.4.0/css/mdb.min.css"/>
         <h:outputStylesheet library="default" name="css/main.css"/>
@@ -22,29 +20,34 @@
 
     <h:body>
         <div class="container">
-            <h:graphicImage alt="Image"
-                            value="/img/tuman.png"/>
+            <h:graphicImage alt="Header Image" value="#{msg['header.image']}"/>
 
             <header class="mb-4 mt-4">
-                <h1>Plant manager</h1>
+                <h1>#{msg['app.name']}</h1>
             </header>
+
             <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
                 <div class="container-fluid">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <h:link styleClass="nav-link" outcome="/index.xhtml">Home</h:link>
+                            <h:link styleClass="nav-link" outcome="/index.xhtml" value="#{msg['nav.home']}"/>
                         </li>
-                        <!--
                         <li class="nav-item">
-                            <h:link styleClass="nav-link"
-                                    outcome="/plant/plant_list.xhtml">Plants</h:link>
-                        </li>
-                        -->
-                        <li class="nav-item">
-                            <h:link styleClass="nav-link"
-                                    outcome="/species/species_list.xhtml">Species</h:link>
+                            <h:link styleClass="nav-link" outcome="/species/species_list.xhtml" value="#{msg['nav.species']}"/>
                         </li>
                     </ul>
+
+                    <div class="d-flex align-items-center">
+                        <h:panelGroup rendered="#{not empty request.remoteUser}">
+                            <span class="me-3">#{msg['nav.logged_as']} <strong>#{request.remoteUser}</strong></span>
+                            <h:form style="display:inline;">
+                                <h:commandButton value="#{msg['nav.logout']}" action="#{logoutBean.logout()}" styleClass="btn btn-outline-dark btn-sm"/>
+                            </h:form>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{empty request.remoteUser}">
+                            <h:link value="#{msg['nav.login']}" outcome="/login.xhtml" styleClass="btn btn-outline-primary btn-sm"/>
+                        </h:panelGroup>
+                    </div>
                 </div>
             </nav>
 

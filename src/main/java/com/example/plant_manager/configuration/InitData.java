@@ -148,7 +148,19 @@ public class InitData {
                     .species(ficus)
                     .build();
 
+            Plant testPlant3 = Plant.builder()
+                    .id(UUID.randomUUID())
+                    .name("Test24")
+                    .lastWateringDate(LocalDate.of(2025, 10, 10))
+                    .description("A thriving Monstera kept near the living room window.")
+                    .age(2)
+                    .owner(alice)
+                    .species(testSpecies)
+                    .build();
+
             ficus.setPlantList(new ArrayList<>(List.of(kevinFicus, testPlant, testPlant2)));
+            testSpecies.setPlantList(new ArrayList<>(List.of(testPlant3)));
+
             speciesService.create(ficus);
             speciesService.create(testSpecies);
         }

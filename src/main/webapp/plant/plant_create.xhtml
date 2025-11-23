@@ -11,14 +11,14 @@
 
     <ui:define name="content">
         <article>
-            <header><h2>Create plant</h2></header>
+            <header><h2>#{msg['plant.create.header']}</h2></header>
             <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
 
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="name" value="#{plantCreate.plant.name}" styleClass="form-control"/>
-                            <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                            <h:outputLabel for="name" value="#{msg['plant.field.name']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="desc" value="#{plantCreate.plant.description}" styleClass="form-control"/>
-                            <h:outputLabel for="desc" value="Description:" styleClass="form-label"/>
+                            <h:outputLabel for="desc" value="#{msg['plant.field.description']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="age" value="#{plantCreate.plant.age}" styleClass="form-control"/>
-                            <h:outputLabel for="age" value="Age:" styleClass="form-label"/>
+                            <h:outputLabel for="age" value="#{msg['plant.field.age']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -47,24 +47,24 @@
                             <h:selectOneMenu id="speciesSelect"
                                              value="#{plantCreate.plant.species}"
                                              styleClass="form-select">
-                                <f:selectItem itemLabel="-- Select a Species --" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItem itemLabel="#{msg['plant.select.species']}" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{plantCreate.species}"
                                                var="species"
                                                itemValue="#{species}"
                                                itemLabel="#{species.commonName}" />
                             </h:selectOneMenu>
-                            <h:outputLabel for="speciesSelect" value="Species:" styleClass="form-label"/>
+                            <h:outputLabel for="speciesSelect" value="#{msg['plant.field.species']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-primary" value="Create"
+                        <h:commandButton styleClass="btn btn-primary" value="#{msg['action.create']}"
                                          action="#{plantCreate.saveAction()}"/>
                     </div>
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-secondary" value="Cancel"
+                        <h:commandButton styleClass="btn btn-secondary" value="#{msg['action.cancel']}"
                                          action="#{plantCreate.cancelAction()}"/>
                     </div>
                 </div>

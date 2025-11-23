@@ -1,11 +1,14 @@
 package com.example.plant_manager.plant.service;
 
+import com.example.plant_manager.component.LogOperation;
 import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.plant.repository.PlantRepository;
 import com.example.plant_manager.species.entity.Species;
 import com.example.plant_manager.species.repository.SpeciesRepository;
 import com.example.plant_manager.user.entity.User;
+import com.example.plant_manager.user.entity.UserRoles;
 import com.example.plant_manager.user.repository.UserRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -37,17 +40,43 @@ public class PlantService {
     }
 
     public Optional<Plant> find(UUID id) {
-        if(securityContext.isCallerInRole("admin")){
-            return plantRepository.find(id);
+        Optional<Plant> plant = plantRepository.find(id);
+
+        if (plant.isEmpty()) {
+            return Optional.empty();
         }
-        else{
-            return plantRepository.findByIdAndUser(id, securityContext.getCallerPrincipal().getName());
+
+        if (securityContext.isCallerInRole("admin")) {
+            return plant;
         }
+
+        String username = getAuthenticatedUsername();
+        if (!plant.get().getOwner().getLogin().equals(username)) {
+            throw new ForbiddenException("Access denied");
+        }
+
+        return plant;
     }
 
     public List<Plant> findAll() {
         return plantRepository.findAll();
     }
+
+    public List<Plant> findAll(User user) {
+        return plantRepository.findAllByUser(user);
+    }
+
+    @RolesAllowed(UserRoles.USER)
+    public List<Plant> findAllForCallerPrincipal() {
+        System.out.println("GOWNO GOWNO");
+        if (securityContext.isCallerInRole(UserRoles.ADMIN)) {
+            return findAll();
+        }
+        User user = userRepository.findByLogin(securityContext.getCallerPrincipal().getName())
+                .orElseThrow(IllegalStateException::new);
+        return findAll(user);
+    }
+
 
     public Optional<List<Plant>> findAllBySpecies(UUID id) {
         Species s = speciesRepository.find(id).orElse(null);
@@ -80,13 +109,14 @@ public class PlantService {
 
         Optional<Plant> plant = plantRepository.findByIdAndSpecies(id, speciesId);
 
-        if (plant.isPresent() && !plant.get().getOwner().equals(username)) {
+        if (plant.isPresent() && !plant.get().getOwner().getLogin().equals(username)) {
             throw new ForbiddenException("User cannot access this plant");
         }
 
         return plantRepository.findByIdAndSpeciesAndUser(id, speciesId, username);
     }
 
+    @LogOperation
     public void create(Plant plant) {
         if (securityContext.getCallerPrincipal() == null) {
             throw new NotAuthorizedException("User is not authenticated");
@@ -106,6 +136,7 @@ public class PlantService {
         species.getPlantList().add(plant);
     }
 
+    @LogOperation
     public void update(Plant plant) {
         String username = getAuthenticatedUsername();
 
@@ -113,7 +144,8 @@ public class PlantService {
                 .orElseThrow(() -> new NotFoundException("plant not found"));
 
         if (!securityContext.isCallerInRole("admin")) {
-            if (!existing.getOwner().equals(username)) {
+            // POPRAWKA: Porównujemy login właściciela (String) z nazwą użytkownika (String)
+            if (!existing.getOwner().getLogin().equals(username)) {
                 throw new ForbiddenException("You cannot modify this plant");
             }
         }
@@ -121,6 +153,7 @@ public class PlantService {
         plantRepository.update(plant);
     }
 
+    @LogOperation
     public void delete(UUID id) {
         String username = getAuthenticatedUsername();
 
@@ -128,7 +161,7 @@ public class PlantService {
                 .orElseThrow(() -> new NotFoundException("plant not found"));
 
         if (!securityContext.isCallerInRole("admin")) {
-            if (!existing.getOwner().equals(username)) {
+            if (!existing.getOwner().getLogin().equals(username)) {
                 throw new ForbiddenException("You cannot delete this plant");
             }
         }

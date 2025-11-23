@@ -10,6 +10,9 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ejb.EJBException;
+import jakarta.ws.rs.ForbiddenException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,11 +45,21 @@ public class PlantView implements Serializable {
     public void setService(PlantService service) {this.service = service;}
 
     public void init() throws IOException {
-        Optional<Plant> plant = service.find(id);
-        if (plant.isPresent()) {
-            this.plant = factory.plantToModel().apply(plant.get());
-        } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Plant not found");
+        try {
+            Optional<Plant> plant = service.find(id);
+            if (plant.isPresent()) {
+                this.plant = factory.plantToModel().apply(plant.get());
+            } else {
+                FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Plant not found");
+            }
+        } catch (ForbiddenException e) {
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+        } catch (EJBException e) {
+            if (e.getCause() instanceof ForbiddenException) {
+                FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+            } else {
+                throw e;
+            }
         }
     }
 }

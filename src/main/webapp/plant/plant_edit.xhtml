@@ -12,13 +12,13 @@
 
     <ui:define name="content">
         <article>
-            <header><h2>Edit character info</h2></header>
+            <header><h2>#{msg['plant.edit.header']}</h2></header>
             <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="name" value="#{plantEdit.plant.name}" styleClass="form-control"/>
-                            <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                            <h:outputLabel for="name" value="#{msg['plant.field.name']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="desc" value="#{plantEdit.plant.description}" styleClass="form-control"/>
-                            <h:outputLabel for="desc" value="Description:" styleClass="form-label"/>
+                            <h:outputLabel for="desc" value="#{msg['plant.field.description']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -36,18 +36,18 @@
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="age" value="#{plantEdit.plant.age}" styleClass="form-control"/>
-                            <h:outputLabel for="age" value="Age:" styleClass="form-label"/>
+                            <h:outputLabel for="age" value="#{msg['plant.field.age']}" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-primary" value="Update"
+                        <h:commandButton styleClass="btn btn-primary" value="#{msg['action.update']}"
                                          action="#{plantEdit.saveAction()}"/>
                     </div>
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-secondary" type="reset" value="Reset"/>
+                        <h:commandButton styleClass="btn btn-secondary" type="reset" value="#{msg['action.reset']}"/>
                     </div>
                 </div>
             </h:form>

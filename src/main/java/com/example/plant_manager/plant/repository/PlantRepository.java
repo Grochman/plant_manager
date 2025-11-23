@@ -2,6 +2,7 @@ package com.example.plant_manager.plant.repository;
 
 import com.example.plant_manager.plant.entity.Plant;
 import com.example.plant_manager.species.entity.Species;
+import com.example.plant_manager.user.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
@@ -40,6 +41,12 @@ public class PlantRepository {
 
     public List<Plant> findAll() {
         return em.createQuery("select p from Plant p", Plant.class).getResultList();
+    }
+
+    public List<Plant> findAllByUser(User user) {
+        return em.createQuery("select p from Plant p where p.owner = :user", Plant.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 
     public List<Plant> find() {

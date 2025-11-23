@@ -18,100 +18,88 @@
 
             <div class="container">
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Family
-                    </div>
+                    <div class="col-6">#{msg['species.field.family']}</div>
                     <div class="col-6">
                         <h:outputText value="#{speciesView.species.family}"/>
                     </div>
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Ful name
-                    </div>
-                    <div class="col-6">
-                        <h:outputText value="#{speciesView.species.fullName}"/>
-                    </div>
+                    <div class="col-6">#{msg['species.field.name']}</div> <div class="col-6">
+                    <h:outputText value="#{speciesView.species.fullName}"/>
+                </div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Common name
-                    </div>
+                    <div class="col-6">#{msg['species.field.commonName']}</div>
                     <div class="col-6">
                         <h:outputText value="#{speciesView.species.commonName}"/>
                     </div>
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Description
-                    </div>
+                    <div class="col-6">#{msg['species.field.description']}</div>
                     <div class="col-6">
                         <h:outputText value="#{speciesView.species.description}"/>
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Watering rate in days
-                    </div>
+                    <div class="col-6">#{msg['species.field.watering']}</div>
                     <div class="col-6">
                         <h:outputText value="#{speciesView.species.wateringRateInDays}"/>
                     </div>
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Origin
-                    </div>
+                    <div class="col-6">#{msg['species.field.origin']}</div>
                     <div class="col-6">
                         <h:outputText value="#{speciesView.species.origin}"/>
                     </div>
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-6">
-                        Light intensity
-                    </div>
+                    <div class="col-6">#{msg['species.field.light']}</div>
                     <div class="col-6">
                         <h:outputText value="#{speciesView.species.lightType.type}"/>
                     </div>
                 </div>
-                <h:dataTable value="#{speciesView.species.plants.plants}" var="plant"
-                             styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
-                    <h:column>
-                        <f:facet name="header">Name</f:facet>
-                        <h:outputText value="#{plant.name}"/>
-                    </h:column>
+                <h:form id="plantsForm">
+                    <h:dataTable value="#{speciesView.species.plants.plants}" var="plant"
+                                 styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
 
-                    <h:column>
-                        <f:facet name="header">View</f:facet>
-                        <h:link outcome="/plant/plant_view.xhtml" value="View">
-                            <f:param name="id" value="#{plant.id}"/>
-                        </h:link>
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">#{msg['plant.field.name']}</f:facet>
+                            <h:outputText value="#{plant.name}"/>
+                        </h:column>
 
-                    <h:column>
-                        <f:facet name="header">Edit</f:facet>
-                        <h:link outcome="/plant/plant_edit.xhtml" value="Edit">
-                            <f:param name="id" value="#{plant.id}"/>
-                        </h:link>
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">#{msg['action.view']}</f:facet>
+                            <h:link outcome="/plant/plant_view.xhtml" value="#{msg['action.view']}">
+                                <f:param name="id" value="#{plant.id}"/>
+                            </h:link>
+                        </h:column>
 
-                    <h:column>
-                        <f:facet name="header">Delete</f:facet>
-                        <h:form>
-                            <h:commandButton styleClass="btn" value="Delete"
-                                             action="#{speciesView.deleteAction(plant)}"/>
-                        </h:form>
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">#{msg['action.edit']}</f:facet>
+                            <h:link outcome="/plant/plant_edit.xhtml" value="#{msg['action.edit']}">
+                                <f:param name="id" value="#{plant.id}"/>
+                            </h:link>
+                        </h:column>
 
-                    <f:facet name="footer">
-                        <h:button styleClass="btn" outcome="/plant/plant_create.xhtml"
-                                  value="Create new plant"/>
-                    </f:facet>
-                </h:dataTable>
+                        <h:column>
+                            <f:facet name="header">#{msg['action.delete']}</f:facet>
+                            <h:commandButton styleClass="btn" value="#{msg['action.delete']}"
+                                             action="#{speciesView.deleteAction(plant)}">
+                                <f:ajax execute="@this" render="@form"/>
+                            </h:commandButton>
+                        </h:column>
+
+                        <f:facet name="footer">
+                            <h:button styleClass="btn" outcome="/plant/plant_create.xhtml"
+                                      value="#{msg['plant.create.button']}"/>
+                        </f:facet>
+                    </h:dataTable>
+                </h:form>
             </div>
         </article>
     </ui:define>
