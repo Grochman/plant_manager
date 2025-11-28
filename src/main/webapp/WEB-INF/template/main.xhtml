@@ -40,9 +40,6 @@
                     <div class="d-flex align-items-center">
                         <h:panelGroup rendered="#{not empty request.remoteUser}">
                             <span class="me-3">#{msg['nav.logged_as']} <strong>#{request.remoteUser}</strong></span>
-                            <h:form style="display:inline;">
-                                <h:commandButton value="#{msg['nav.logout']}" action="#{logoutBean.logout()}" styleClass="btn btn-outline-dark btn-sm"/>
-                            </h:form>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{empty request.remoteUser}">
                             <h:link value="#{msg['nav.login']}" outcome="/login.xhtml" styleClass="btn btn-outline-primary btn-sm"/>

@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Level;
 
-@Log // Lombok wstrzykuje standardowy java.util.logging.Logger
+@Log
 @Interceptor
 @LogOperation
 @Priority(Interceptor.Priority.APPLICATION)

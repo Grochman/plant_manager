@@ -33,9 +33,8 @@ public class SpeciesList {
         return species;
     }
 
-    // ZMIANA: Zwracamy null zamiast stringa nawigacyjnego
     public String deleteAction(SpeciessModel.Species species) {
         service.delete(species.getId());
-        return null; // Pozostajemy na tym samym widoku (AJAX odświeży treść)
+        return null;
     }
 }

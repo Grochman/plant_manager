@@ -35,8 +35,6 @@ public class PlantList {
     }
 
     public String deleteAction(PlantsModel.Plant plant) {
-        System.out.println("gowno22");
-
         service.delete(plant.getId());
         return "plant_list?faces-redirect=true";
     }
