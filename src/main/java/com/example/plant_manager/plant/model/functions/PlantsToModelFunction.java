@@ -16,9 +16,10 @@ public class PlantsToModelFunction implements Function<List<Plant>, PlantsModel>
                         .map(plant -> PlantsModel.Plant.builder()
                                 .id(plant.getId())
                                 .name(plant.getName())
+                                .creationDateTime(plant.getCreationDateTime())
+                                .updateDateTime(plant.getUpdateDateTime())
                                 .build())
                         .toList())
                 .build();
     }
 }
-

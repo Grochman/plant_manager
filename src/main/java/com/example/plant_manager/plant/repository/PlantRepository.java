@@ -1,18 +1,22 @@
 package com.example.plant_manager.plant.repository;
 
 import com.example.plant_manager.plant.entity.Plant;
-import com.example.plant_manager.species.entity.Species;
+import com.example.plant_manager.plant.entity.Plant_;
+import com.example.plant_manager.species.entity.Species_;
 import com.example.plant_manager.user.entity.User;
-import jakarta.enterprise.context.ApplicationScoped;
+import com.example.plant_manager.user.entity.User_;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Dependent
 @NoArgsConstructor(force = true)
@@ -23,86 +27,125 @@ public class PlantRepository {
     public void setEm(EntityManager em) {this.em = em;}
 
     public Optional<Plant> find(UUID id) {
-        return  Optional.ofNullable(em.find(Plant.class, id));
+        return Optional.ofNullable(em.find(Plant.class, id));
     }
 
     public Optional<Plant> findByIdAndUser(UUID id, String login) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant)
+                .where(cb.and(
+                        cb.equal(plant.get(Plant_.id), id),
+                        cb.equal(plant.get(Plant_.owner).get(User_.login), login)
+                ));
+
         try {
-            Plant plant = em.createQuery(
-                            "SELECT p FROM Plant p WHERE p.id = :id AND p.owner.login = :login", Plant.class)
-                    .setParameter("id", id)
-                    .setParameter("login", login)
-                    .getSingleResult();
-            return Optional.of(plant);
-        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.of(em.createQuery(cq).getSingleResult());
+        } catch (NoResultException e) {
             return Optional.empty();
         }
     }
 
     public List<Plant> findAll() {
-        return em.createQuery("select p from Plant p", Plant.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant);
+
+        return em.createQuery(cq).getResultList();
     }
 
     public List<Plant> findAllByUser(User user) {
-        return em.createQuery("select p from Plant p where p.owner = :user", Plant.class)
-                .setParameter("user", user)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant)
+                .where(cb.equal(plant.get(Plant_.owner), user));
+
+        return em.createQuery(cq).getResultList();
     }
 
     public List<Plant> find() {
-        return em.createQuery("select p from Plant p", Plant.class).getResultList();
+        return findAll();
     }
 
-    public void create(Plant entity)  throws IllegalArgumentException {
+    public void create(Plant entity) throws IllegalArgumentException {
         em.persist(entity);
     }
 
-    public void update(Plant entity)  throws IllegalArgumentException {
+    public void update(Plant entity) throws IllegalArgumentException {
         em.merge(entity);
     }
 
     public void delete(UUID id) {
-        em.remove(em.find(Plant.class, id));
+        Plant plant = em.find(Plant.class, id);
+        if (plant != null) {
+            em.remove(plant);
+        }
     }
 
     public List<Plant> findAllBySpecies(UUID id) {
-        return em.createQuery(
-                        "SELECT p FROM Plant p WHERE p.species.id = :speciesId", Plant.class)
-                .setParameter("speciesId", id)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant)
+                .where(cb.equal(plant.get(Plant_.species).get(Species_.id), id));
+
+        return em.createQuery(cq).getResultList();
     }
 
     public List<Plant> findAllBySpeciesAndUser(UUID speciesId, String login) {
-        return em.createQuery(
-                        "SELECT p FROM Plant p WHERE p.species.id = :speciesId AND p.owner.login = :login", Plant.class)
-                .setParameter("speciesId", speciesId)
-                .setParameter("login", login)
-                .getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant)
+                .where(cb.and(
+                        cb.equal(plant.get(Plant_.species).get(Species_.id), speciesId),
+                        cb.equal(plant.get(Plant_.owner).get(User_.login), login)
+                ));
+
+        return em.createQuery(cq).getResultList();
     }
 
     public Optional<Plant> findByIdAndSpecies(UUID id, UUID speciesId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant)
+                .where(cb.and(
+                        cb.equal(plant.get(Plant_.species).get(Species_.id), speciesId),
+                        cb.equal(plant.get(Plant_.id), id)
+                ));
+
         try {
-            Plant plant = em.createQuery(
-                            "SELECT p FROM Plant p WHERE p.species.id = :speciesId AND p.id = :id", Plant.class)
-                    .setParameter("speciesId", speciesId)
-                    .setParameter("id", id)
-                    .getSingleResult();
-            return Optional.of(plant);
-        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.of(em.createQuery(cq).getSingleResult());
+        } catch (NoResultException e) {
             return Optional.empty();
         }
     }
 
-    public Optional<Plant> findByIdAndSpeciesAndUser(UUID id, UUID speciesId,  String login) {
+    public Optional<Plant> findByIdAndSpeciesAndUser(UUID id, UUID speciesId, String login) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Plant> cq = cb.createQuery(Plant.class);
+        Root<Plant> plant = cq.from(Plant.class);
+
+        cq.select(plant)
+                .where(cb.and(
+                        cb.equal(plant.get(Plant_.species).get(Species_.id), speciesId),
+                        cb.equal(plant.get(Plant_.id), id),
+                        cb.equal(plant.get(Plant_.owner).get(User_.login), login)
+                ));
+
         try {
-            Plant plant = em.createQuery(
-                            "SELECT p FROM Plant p WHERE p.species.id = :speciesId AND p.id = :id AND p.owner.login = :login", Plant.class)
-                    .setParameter("speciesId", speciesId)
-                    .setParameter("id", id)
-                    .setParameter("login", login)
-                    .getSingleResult();
-            return Optional.of(plant);
-        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.of(em.createQuery(cq).getSingleResult());
+        } catch (NoResultException e) {
             return Optional.empty();
         }
     }

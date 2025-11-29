@@ -19,6 +19,7 @@ public class UpdatePlantWithModelFunction implements BiFunction<Plant, PlantEdit
                 .description(request.getDescription())
                 .lastWateringDate(request.getLastWateringDate())
                 .species(entity.getSpecies())
+                .creationDateTime(entity.getCreationDateTime())
                 .owner(entity.getOwner())
                 .build();
     }

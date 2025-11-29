@@ -73,6 +73,20 @@
                         </h:column>
 
                         <h:column>
+                            <f:facet name="header">#{msg['plant.field.created']}</f:facet>
+                            <h:outputText value="#{plant.creationDateTime}">
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">#{msg['plant.field.updated']}</f:facet>
+                            <h:outputText value="#{plant.updateDateTime}">
+                                <f:convertDateTime type="localDateTime" pattern="yyyy-MM-dd HH:mm"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
                             <f:facet name="header">#{msg['action.view']}</f:facet>
                             <h:link outcome="/plant/plant_view.xhtml" value="#{msg['action.view']}">
                                 <f:param name="id" value="#{plant.id}"/>

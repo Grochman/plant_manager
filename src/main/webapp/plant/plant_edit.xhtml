@@ -17,27 +17,33 @@
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
-                            <h:inputText id="name" value="#{plantEdit.plant.name}" styleClass="form-control"/>
+                            <h:inputText id="name" value="#{plantEdit.plant.name}"
+                                         styleClass="form-control #{component.valid ? '' : 'is-invalid'}" label="#{msg['plant.field.name']}"/>
                             <h:outputLabel for="name" value="#{msg['plant.field.name']}" styleClass="form-label"/>
                         </div>
+                        <h:message for="name" styleClass="text-danger small"/>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
-                            <h:inputText id="desc" value="#{plantEdit.plant.description}" styleClass="form-control"/>
+                            <h:inputText id="desc" value="#{plantEdit.plant.description}"
+                                         styleClass="form-control #{component.valid ? '' : 'is-invalid'}" label="#{msg['plant.field.description']}"/>
                             <h:outputLabel for="desc" value="#{msg['plant.field.description']}" styleClass="form-label"/>
                         </div>
+                        <h:message for="desc" styleClass="text-danger small"/>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
-                            <h:inputText id="age" value="#{plantEdit.plant.age}" styleClass="form-control"/>
+                            <h:inputText id="age" value="#{plantEdit.plant.age}"
+                                         styleClass="form-control #{component.valid ? '' : 'is-invalid'}" label="#{msg['plant.field.age']}"/>
                             <h:outputLabel for="age" value="#{msg['plant.field.age']}" styleClass="form-label"/>
                         </div>
+                        <h:message for="age" styleClass="text-danger small"/>
                     </div>
                 </div>
 

@@ -144,7 +144,6 @@ public class PlantService {
                 .orElseThrow(() -> new NotFoundException("plant not found"));
 
         if (!securityContext.isCallerInRole("admin")) {
-            // POPRAWKA: Porównujemy login właściciela (String) z nazwą użytkownika (String)
             if (!existing.getOwner().getLogin().equals(username)) {
                 throw new ForbiddenException("You cannot modify this plant");
             }
